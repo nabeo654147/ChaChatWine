@@ -2,7 +2,9 @@ import React from 'react';
 
 const logPage = () => {
   return (
-    <h1>LogPage</h1>
+    <>
+      <h1>LogPage</h1>
+    </>
   )
 }
 

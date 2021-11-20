@@ -6,11 +6,11 @@ import { InputForm } from '../components/inputForm';
 const SignUpPage: VFC<NextPage> = () => {
   return (
     <>
-      <Layout
+      {/* <Layout
         title='Sign Up Page'
         description='新規登録用のページ'
       >
-      </Layout>
+      </Layout> */}
       <h1>Sign Up</h1>
       <form>
         <InputForm

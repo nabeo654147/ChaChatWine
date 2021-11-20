@@ -28,7 +28,7 @@ const LoginPage: VFC<NextPage> = () => {
         />
         <button type='submit'>ログイン</button>
       </form>
-      <Link href='/signUpPage'>新規登録</Link>
+      <Link href='/signUpPage'><a>新規登録</a></Link>
     </>
   )
 }
