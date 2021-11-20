@@ -9,7 +9,7 @@ type Props = {
   children?: React.ReactNode;
 }
 
-export const Layout = ({ title, children, description }: Props) => {
+export const Layout:VFC = ({ title, children, description }: Props) => {
   const pageTitel = title || 'ホームページタイトル'
   return (
     <>
