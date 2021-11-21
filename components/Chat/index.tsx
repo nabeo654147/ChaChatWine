@@ -1,5 +1,5 @@
 import React, { VFC } from 'react';
-import AtomAvatar from '../AvatarForm';
+import Avatar from '../Avatar';
 import styled, { css } from 'styled-components';
 
 type ChatProps = {
@@ -14,9 +14,9 @@ const Chat: VFC<ChatProps> = ({ type, text }) => {
         <ChatRow type={type} text={text}>
             <div>
                 {isQuestion ? (
-                    <AtomAvatar  src='https://pbs.twimg.com/media/CqXU2ckUEAAUKio.jpg' />
+                    <Avatar  src={'/img/corksan.jpeg'} size={50} />
                 ) : (
-                    <AtomAvatar src={'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnLs8TxTTweX1vARd39quZwid3ZxSEWA75fQ&usqp=CAU'} />
+                    <Avatar src={'/img/corkboy.jpg'} size={50}/>
                 )}
             </div>
             <ChatBubble>{text}</ChatBubble>

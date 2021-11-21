@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import React, { ReactNode, VFC } from 'react';
+import React, { ReactNode, FC } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 
