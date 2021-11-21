@@ -20,9 +20,9 @@ const defaultDataset = {
   },
   "redWine": {
     answers: [
-      { content: "", nextId: "" },
-      { content: "", nextId: "" },
-      { content: "", nextId: "" },
+      { content: "香りが良くて軽いタイプ", nextId: "contact" },
+      { content: "", nextId: "contact" },
+      { content: "", nextId: "contact" },
       { content: "", nextId: "" },
       ],
     question: "赤ワインだね！まかせな！　タイプはどうしたい？",

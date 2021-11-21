@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import React, { ReactNode, VFC } from 'react';
+import React, { ReactNode, FC } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 
@@ -9,7 +9,7 @@ type Props = {
   children?: React.ReactNode;
 }
 
-export const Layout:VFC = ({ title, children, description }: Props) => {
+export const Layout:FC<Props> = ({ title, children, description }: Props) => {
   const pageTitel = title || 'ホームページタイトル'
   return (
     <>

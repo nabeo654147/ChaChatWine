@@ -4,7 +4,7 @@ import AnswersList from '../AnswersList';
 import Chats from '../Chats'
 import defaultDataset from '../dataset'
 import styled from 'styled-components';
-// import {FormDialog} from "../FormDialog";
+import SuggestionModal from "../SuggestionModal";
 
 type Dataset = {
   [currentId: string]:{
@@ -28,18 +28,18 @@ type ChatsProps = {
 
 const ChatBot: VFC = () => {
   const [answers, setAnswers] = useState<AnswersProps>([]); // 回答コンポーネントに表示するデータ
-  const [chats, setChats] = useState<ChatsProps>([]);// チャットコンポーネントに表示するデータ
-  const [currentId, setCurrentId] = useState<string>('init');// 現在の質問ID
+  const [chats, setChats] = useState<ChatsProps>([]); // チャットコンポーネントに表示するデータ
+  const [currentId, setCurrentId] = useState<string>('init'); // 現在の質問ID
   const [dataset, setDataset] = useState<Dataset>(defaultDataset); // 質問と回答のデータセット
-  const [open, setOpen] = useState<boolean>(false); // 問い合わせフォーム用モーダルの開閉を管理
+  const [open, setOpen] = useState<boolean>(false); //モーダルの開閉を管理
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // 問い合わせフォーム用モーダルを開くCallback関数
+  // ワインの説明モーダルを開くCallback関数
   const handleOpen = useCallback(() => {
       setOpen(true)
   },[setOpen]);
 
-  // 問い合わせフォーム用モーダルを閉じるCallback関数
+  // ワイン説明モーダルを閉じるCallback関数
   const handleClose = useCallback(() => {
       setOpen(false)
   },[setOpen]);
@@ -65,33 +65,33 @@ const ChatBot: VFC = () => {
     setCurrentId(nextQuestionId)
   }
 
-    // 回答が選択された時に呼ばれる関数
-    const selectAnswer = useCallback((selectedAnswer: string, nextQuestionId: string) => {
-        switch (true) {
-            // お問い合わせが選択された場合
-            case (nextQuestionId === 'contact'):
-                handleOpen();
-                break;
+  // 回答が選択された時に呼ばれる関数
+  const selectAnswer = useCallback((selectedAnswer: string, nextQuestionId: string) => {
+    switch (true) {
+      // お問い合わせが選択された場合
+      case (nextQuestionId === 'contact'):
+        handleOpen();
+        break;
 
-            // リンクが選択された時
-            case /^https:*/.test(nextQuestionId):
-                const a = document.createElement('a');
-                a.href = nextQuestionId;
-                a.target = '_blank';
-                a.click();
-                break;
+      // リンクが選択された時
+      case /^https:*/.test(nextQuestionId):
+        const a = document.createElement('a');
+          a.href = nextQuestionId;
+          a.target = '_blank';
+          a.click();
+          break;
 
-            // 選択された回答をchatsに追加
-            default:
-                // 現在のチャット一覧を取得
-                addChats({
-                    text: selectedAnswer,
-                    type: 'answer'
-                })
+      // 選択された回答をchatsに追加
+      default:
+      // 現在のチャット一覧を取得
+      addChats({
+        text: selectedAnswer,
+        type: 'answer'
+      })
 
-                setTimeout(() => displayNextQuestion(nextQuestionId, dataset[nextQuestionId]), 750)
-                break;
-        }
+      setTimeout(() => displayNextQuestion(nextQuestionId, dataset[nextQuestionId]), 750)
+          break;
+      }
     },[answers]);
 
     // 最初の質問をチャットエリアに表示する
@@ -127,7 +127,7 @@ const ChatBot: VFC = () => {
           behavior: 'smooth'
       });
     }
-  })
+  },[answers])
 
     return (
         <Section >
@@ -140,11 +140,11 @@ const ChatBot: VFC = () => {
                         <AnswersList answers={answers} select={selectAnswer}/>
                     </>
                 {/* )} */}
-                {/* <FormDialog open={open} handleOpen={handleOpen} handleClose={handleClose}/> */}
+                <SuggestionModal open={open} handleClose={handleClose}/>
             </ChatBox>
         </Section>
     )
-}
+};
 
 export default ChatBot;
 
@@ -153,34 +153,20 @@ const Section = styled.section`
   position: relative;
   height: 100vh;
   width: 100%;
-`
+`;
 
 const ChatBox = styled.div`
   background: #ffa4a4;
   border: 1px solid rgba(0,0,0,0.3);
   border-radius: 4px;
   box-sizing: border-box;
-  height: 592px;
+  height: 90%;
   max-width: 432px;
   padding: 0 1rem;
   width: 100%;
   overflow: scroll;
-
-  /* Vertical and horizontal center alignment */
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-`
-
-// .p-question__title {
-//   font-size: 1.25rem;
-//   font-weight: 600;
-//   margin: 0 0 1rem 0;
-// }
-
-// .p-question__description {
-//   font-size: 1rem;
-//   letter-spacing: .125rem;
-//   line-height: 1.7;
-// }
+`;
