@@ -8,12 +8,20 @@ import styled from 'styled-components';
 type Props = {
   title?: string;
   description?: string;
+  beforeSubMessage?: string;
+  afterSubMessage?: string;
   children?: React.ReactNode;
 }
 
-export const Layout:VFC<Props> = ({ title, description, children}) => {
+export const Layout:VFC<Props> = ({ 
+    title,
+    description,
+    beforeSubMessage,
+    afterSubMessage,
+    children
+  }) => {
   const pageTitel = title || 'ホームページタイトル'
-  const { logout } = useAuth();
+  const { currentUser ,logout } = useAuth();
 
   return (
     <>
@@ -23,6 +31,7 @@ export const Layout:VFC<Props> = ({ title, description, children}) => {
       </Head>
       <header>
         <h1>{ pageTitel }</h1>
+        {currentUser && <SubTitle>{beforeSubMessage}{ currentUser?.displayName }{afterSubMessage}</SubTitle>}
           <HeaderNav>
            <Link href='/'>Home</Link>
            <button onClick={logout}>ログアウト</button>
@@ -48,4 +57,8 @@ const HeaderNav = styled.nav`
   display: flex;
   align-items: flex-end;
   justify-content: space-around;
+`
+
+const SubTitle = styled.h3`
+  color: #ffbe92;
 `

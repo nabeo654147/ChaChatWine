@@ -1,9 +1,11 @@
-import { NextPage } from 'next';
+import type { NextPage } from 'next';
 import React, { useRef, useState } from 'react';
+import styled from 'styled-components';
+
 import { Layout } from '../components/layout';
 import { InputForm } from '../components/inputForm';
 import { useAuth } from '../lib/AuthContext';
-import styled from 'styled-components';
+import { useRequireLogin } from '../lib/useRequireLogin';
 import { updateProfile } from '@firebase/auth';
 import { addDoc, collection, getFirestore } from 'firebase/firestore';
  
@@ -16,15 +18,17 @@ const SignUpPage: NextPage = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
+  useRequireLogin();
+
   const handleSignUp = async() => {
     if (emailRef.current && passwordRef.current && userNameRef.current) {
     setLoading(true);
     try{
-      const registerUser = await signUp(emailRef.current.value, passwordRef.current.value)
-        await updateProfile(registerUser.user, {displayName: userNameRef.current.value})
+      const registerUser = await signUp(emailRef.current.value, passwordRef.current.value);
+        await updateProfile(registerUser.user, {displayName: userNameRef.current.value});
         await addDoc(collection(db, 'users'), {
           uid: registerUser.user.uid,
-          userName: userNameRef.current.value,
+          userName: registerUser.user.displayName,
           email: registerUser.user.email
       });
     } catch (err) {

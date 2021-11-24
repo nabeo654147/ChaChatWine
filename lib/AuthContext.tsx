@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect, useContext } from 'react';
 
-import initializeApp, { auth } from '../lib/firebase';
+import { auth } from '../lib/firebase';
 import { createUserWithEmailAndPassword, User, UserCredential } from '@firebase/auth';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
@@ -9,6 +9,14 @@ type AuthContextType = {
   signUp: (email: string, password:string) => Promise<UserCredential>;
   login: (email: string, password:string) => Promise<UserCredential>;
   logout: () => Promise<void>;
+};
+
+type Props = {
+  children?: JSX.Element;
+};
+
+export const useAuth = () => {
+  return useContext(AuthContext);
 };
 
 const signUp = (email: string, password: string) => {
@@ -24,14 +32,6 @@ const logout = () => {
 };
 
 const AuthContext = createContext<AuthContextType>({ currentUser: null, signUp, logout, login});
-
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
-
-type Props = {
-  children?: JSX.Element;
-};
 
 //プロバイダーは状態を管理するものなので、変わらないsignUpなどは別でutilなどに切り出しても良いかも
 const AuthProvider = ({ children }: Props): JSX.Element => {

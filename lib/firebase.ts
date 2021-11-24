@@ -1,6 +1,6 @@
+import { getFirestore } from '@firebase/firestore';
 import { getApps, initializeApp } from 'firebase/app';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,onAuthStateChanged, signOut, User } from 'firebase/auth';
-import { useEffect, useState } from 'react';
+import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -20,28 +20,6 @@ if (getApps().length === 0) {
 
 export const firebaseApp = initializeApp(firebaseConfig);
 export const auth = getAuth(firebaseApp);
+export const db = getFirestore(firebaseApp);
 // const analytics = getAnalytics(firebaseApp);
 export default initializeApp;
-
-export const signUp = (email:string, password:string) => {
-  return createUserWithEmailAndPassword(auth, email, password);
-};
-
-export const login = (email:string, password:string) => {
-  return signInWithEmailAndPassword(auth, email, password);
-};
-
-export const logout = () => {
-  return signOut(auth);
-};
-
-export const useAuth = () => {
-  const [currentUser, setCurrentUser] = useState<User | null>();
-
-  useEffect(() => {
-    const unSub = onAuthStateChanged(auth, user => setCurrentUser(user));
-    return unSub;
-  },[])
-
-  return currentUser;
-};

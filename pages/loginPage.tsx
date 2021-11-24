@@ -1,10 +1,12 @@
-import { useRef, useState } from 'react';
 import type { NextPage } from 'next';
-import { Layout } from '../components/layout';
-import { InputForm } from '../components/inputForm';
+import { useRef, useState } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
+
+import { Layout } from '../components/layout';
+import { InputForm } from '../components/inputForm';
 import { useAuth } from '../lib/AuthContext';
+import { useRequireLogin } from '../lib/useRequireLogin';
 
 const LoginPage: NextPage = () => {
   const { currentUser, login, logout } = useAuth();
@@ -13,6 +15,8 @@ const LoginPage: NextPage = () => {
 
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+
+  useRequireLogin();
 
   const handleLogin = async() => {
     setLoading(true);
@@ -51,7 +55,7 @@ const LoginPage: NextPage = () => {
         <Link href='/signUpPage'><a>新規登録</a></Link>
       </FormBox>
       </FormWrap>
-      {/* <button onClick={logout} disabled={ loading || !currentUser} >ログアウト</button> */}
+      <button onClick={logout} disabled={ loading || !currentUser} >ログアウト</button>
     </Layout>
   )
 }
