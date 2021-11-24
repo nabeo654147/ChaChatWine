@@ -1,12 +1,14 @@
 import React from 'react';
-import SuggestionModal from '../components/SuggestionModal';
+import { Layout } from '../components/layout';
 
 const logPage = () => {
   return (
-    <>
-      <h1>LogPage</h1>
-      {/* <SuggestionModal /> */}
-    </>
+    <Layout
+      title={'Log Page'}
+      description={'記録ページ'}
+      afterSubMessage={'の記録ページ'}
+    >
+    </Layout>
   )
 }
 
