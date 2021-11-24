@@ -2,6 +2,8 @@ import type { NextPage } from 'next';
 import React, { VFC } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useAuth } from '../lib/AuthContext';
+import styled from 'styled-components';
 
 type Props = {
   title?: string;
@@ -11,6 +13,8 @@ type Props = {
 
 export const Layout:VFC<Props> = ({ title, description, children}) => {
   const pageTitel = title || 'ホームページタイトル'
+  const { logout } = useAuth();
+
   return (
     <>
       <Head>
@@ -19,8 +23,12 @@ export const Layout:VFC<Props> = ({ title, description, children}) => {
       </Head>
       <header>
         <h1>{ pageTitel }</h1>
+          <HeaderNav>
+           <Link href='/'>Home</Link>
+           <button onClick={logout}>ログアウト</button>
+          </HeaderNav>
       </header>
-      <nav>
+      {/* <nav>
         <ul>
           <li><Link href='/'>Home</Link></li>
           <li><Link href='/loginPage'>Login</Link></li>
@@ -28,9 +36,16 @@ export const Layout:VFC<Props> = ({ title, description, children}) => {
           <li><Link href='/chatPage'>チャット</Link></li>
           <li><Link href='/logPage'>ログ</Link></li>
         </ul>
-      </nav>
+      </nav> */}
       <main>{ children }</main>
-      <footer>&copy; Next.js Demo</footer>
+      <footer>&copy; ChaChatWine</footer>
     </>
   )
-} 
+};
+
+const HeaderNav = styled.nav`
+  width: 20%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+`
