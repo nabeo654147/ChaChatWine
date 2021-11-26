@@ -14,7 +14,6 @@ const Home: NextPage = () => {
         title={'ChaChatWine'}
         description={'ホームページ概要'}
         beforeSubMessage={'ようこそ！' }
-        afterSubMessage={'さん'}
       >
         <TitleBox>
           <AppTitle>ChaChatWine</AppTitle>

@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { Layout } from '../components/layout';
 import { InputForm } from '../components/inputForm';
 import { useAuth } from '../lib/AuthContext';
-import { useRequireLogin } from '../lib/useRequireLogin';
+import { useRequireLogin } from '../utils/hooks/useRequireLogin';
 
 const LoginPage: NextPage = () => {
   const { currentUser, login, logout } = useAuth();
@@ -36,7 +36,6 @@ const LoginPage: NextPage = () => {
     >
     <FormWrap>
     <FormBox>
-    <div>Currently logged : { currentUser?.displayName } { currentUser?.email } </div>
       <InputForm
         ref={emailRef}
         name={'email'}
