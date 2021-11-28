@@ -49,12 +49,12 @@ const NavBox = styled.nav`
   align-items: center;
 `
 const AppTitle = styled.p`
-  font-size: 4rem;
+  font-size: 3.5rem;
   margin-bottom: 0;
 `
 
 const TitleBox = styled.div`
-  font-size: 2rem;
+  font-size:  1.5rem;
   display: flex;
   justify-content: space-evenly;
   flex-direction: column;

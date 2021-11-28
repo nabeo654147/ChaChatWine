@@ -22,7 +22,8 @@ header {
 }
 
 main {
-  height: 100vh;
+  /* height: 100vh; */
+  padding: 3em;
   background: linear-gradient(25deg, #f13f79, #ffc778);
   /* background: linear-gradient(to bottom right, #fa4545, #ff8b8b, #fff); */
 }

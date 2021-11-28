@@ -5,9 +5,9 @@ import styled from 'styled-components';
 import { Layout } from '../components/layout';
 import { InputForm } from '../components/inputForm';
 import { useAuth } from '../lib/AuthContext';
-import { useRequireLogin } from '../lib/useRequireLogin';
+import { useRequireLogin } from '../utils/hooks/useRequireLogin';
 import { updateProfile } from '@firebase/auth';
-import { addDoc, collection, getFirestore } from 'firebase/firestore';
+import { doc, getFirestore, setDoc } from 'firebase/firestore';
  
 const SignUpPage: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -18,16 +18,13 @@ const SignUpPage: NextPage = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
-  useRequireLogin();
-
   const handleSignUp = async() => {
     if (emailRef.current && passwordRef.current && userNameRef.current) {
     setLoading(true);
     try{
       const registerUser = await signUp(emailRef.current.value, passwordRef.current.value);
         await updateProfile(registerUser.user, {displayName: userNameRef.current.value});
-        await addDoc(collection(db, 'users'), {
-          uid: registerUser.user.uid,
+        await setDoc(doc(db, 'users',`${registerUser.user.uid}`), {
           userName: registerUser.user.displayName,
           email: registerUser.user.email
       });
@@ -39,13 +36,13 @@ const SignUpPage: NextPage = () => {
     }
   };
 
+  useRequireLogin();
+
   return (
     <Layout
       title='Sign Up Page'
       description='新規登録用のページ'
     >
-      <div>ログインユーザー : { currentUser?.displayName } { currentUser?.email }</div>
-
       <FormBox>
         <InputForm
           ref={userNameRef}

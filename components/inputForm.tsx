@@ -1,9 +1,7 @@
-import React,{ forwardRef, MutableRefObject, VFC } from 'react';
+import React,{ forwardRef } from 'react';
 import styled from 'styled-components';
 
 type Props = {
-  //  ref?: React.ForwardedRef<HTMLInputElement>;
-  //  ref?: MutableRefObject<HTMLInputElement | undefined>;
    name: string;
    type: string;
    placeholder: string;
@@ -16,7 +14,7 @@ export const InputForm = forwardRef<HTMLInputElement, Props>((
   return (
     <FormWrap>
       <label htmlFor={props.type}>{props.inputFormTitle}</label>
-      <InputFont
+      <input
         ref={ref}
         name={props.name}
         type={props.type}
@@ -30,8 +28,8 @@ const FormWrap = styled.div`
   font-size: 1.5rem;
   display: flex;
   flex-direction: column;
-`
-
-const InputFont = styled.input`
-  font-size: 1.5rem;
+  > input {
+    border-radius: 0.3rem;
+    font-size: 1.5rem;
+  }
 `
