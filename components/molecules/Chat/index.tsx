@@ -1,5 +1,5 @@
 import React, { VFC } from 'react';
-import Avatar from '../Avatar';
+import Avatar from '../../atoms/Avatar';
 import styled, { css } from 'styled-components';
 
 type ChatProps = {
@@ -57,25 +57,5 @@ const ChatBubble = styled.div`
   margin: 0.2em 0;
   max-width: 80%;
   width: auto;
-  
-  /* position: relative;
-  display: inline-block;
-  margin: 1.5em 0 1.5em 15px;
-  padding: 7px 10px;
-  min-width: 120px;
-  max-width: 100%;
-  color: #555;
-  font-size: 16px;
-  background: #e0edff;
-
-  &::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: -30px;
-  margin-top: -15px;
-  border: 15px solid transparent;
-  border-right: 15px solid #e0edff;
-} */
 `
 

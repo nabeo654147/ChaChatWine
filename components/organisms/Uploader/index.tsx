@@ -2,8 +2,9 @@ import { getDownloadURL, ref, uploadBytesResumable } from '@firebase/storage';
 import { TaskState } from 'firebase/storage';
 import  React,{ useState, useCallback, FC } from 'react';
 import styled from 'styled-components';
-import { storage } from '../../lib/firebase';
+import { storage } from '../../../lib/firebase';
 import { useDropzone } from 'react-dropzone';
+import Image from 'next/dist/client/image';
 
 export type firebaseOnLoadProp = {
   bytesTransferred: number;
@@ -113,7 +114,6 @@ const Upload: FC = () => {
   };
 
   return (
-    <div>
     <Outline>
       <UploadBox
         {...getRootProps()}
@@ -126,7 +126,7 @@ const Upload: FC = () => {
           <div>
             {myFiles.map((file: File) => (
               <React.Fragment key={file.name}>
-                {src && <img src={src} />}
+                {src && <Image src={src} width={350} height={400} />}
               </React.Fragment>
             ))}
           </div>
@@ -140,7 +140,6 @@ const Upload: FC = () => {
           UPLOAD
         </UploadButton>
       </Outline>
-    </div>
   );
 };
 
@@ -158,8 +157,8 @@ const Outline = styled.div`
 `
 
 const UploadBox = styled.div`
-  height: 50vh;
-  background-color: #81afff;
+  /* height: 50vh; */
+  background-color: #c6dbff;
   border: 2px solid #6B7280;;	
   border-radius: 5px;
 `

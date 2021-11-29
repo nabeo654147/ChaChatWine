@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import { Layout } from '../components/layout';
-import { InputForm } from '../components/inputForm';
+import { InputForm } from '../components/molecules/InputForm';
 import { useAuth } from '../lib/AuthContext';
 import { useRequireLogin } from '../utils/hooks/useRequireLogin';
 import { updateProfile } from '@firebase/auth';

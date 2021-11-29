@@ -1,6 +1,6 @@
 import React, { VFC } from 'react';
 import styled  from 'styled-components';
-import Avatar from '../Avatar';
+import Avatar from '../../atoms/Avatar';
 
 type ModalProps = {
   open: boolean,

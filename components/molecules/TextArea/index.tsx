@@ -30,6 +30,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, Props>((
 const FormWrap = styled.div`
   > textarea {
     font-size: 1rem;
+    width: 100%;
     border-radius: 0.3rem;
   } 
 `

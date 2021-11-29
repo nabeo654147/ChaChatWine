@@ -1,6 +1,6 @@
 import React, { VFC } from 'react';
 import styled from 'styled-components';
-import Answer from '../Answer'
+import Answer from '../../atoms/Answer'
 
 type Props = {
     answers: {

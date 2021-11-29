@@ -1,10 +1,10 @@
 import React, {useState, useCallback, useEffect, useRef, VFC} from 'react';
 // import {db} from './firebase/index'
-import AnswersList from '../AnswersList';
-import Chats from '../Chats'
+import AnswersList from '../molecules/AnswersList';
+import Chats from '../molecules/Chats'
 import defaultDataset from '../dataset'
 import styled from 'styled-components';
-import SuggestionModal from "../SuggestionModal";
+import SuggestionModal from "../organisms/SuggestionModal";
 
 type Dataset = {
   [currentId: string]:{
