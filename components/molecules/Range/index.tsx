@@ -1,25 +1,22 @@
-import React,{ forwardRef, useState } from 'react';
+import React, { forwardRef, useState } from 'react';
 import styled from 'styled-components';
 
 type Props = {
-   name: string;
-   type?: string;
-   placeholder?: string;
-   rangeTitle?: string;
-   step?: number;
-   min?: number;
-   max?: number;
-   value?: number;
+  name: string;
+  type?: string;
+  placeholder?: string;
+  rangeTitle?: string;
+  step?: number;
+  min?: number;
+  max?: number;
+  value?: number;
 };
 
-export const Range = forwardRef<HTMLInputElement, Props>((
-  props: Props, 
-  ref
-) => {
+export const Range = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
   const [value, setValue] = useState<number | string>(3);
 
   return (
-    <RangeWrap >
+    <RangeWrap>
       <label>{props.rangeTitle}</label>
       <div>
         <InputRange
@@ -32,10 +29,10 @@ export const Range = forwardRef<HTMLInputElement, Props>((
           value={props.value}
           onChange={(e) => setValue(e.target.value)}
         />
-      <span>{value}</span>
+        <span>{value}</span>
       </div>
     </RangeWrap>
-  )
+  );
 });
 
 const RangeWrap = styled.div`
@@ -46,9 +43,9 @@ const RangeWrap = styled.div`
     /* width: 100%; */
     /* align-items: end; */
   }
-`
+`;
 
 const InputRange = styled.input`
   /* width: 50%; */
   width: 200px;
-`
+`;

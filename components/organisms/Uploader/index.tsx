@@ -1,6 +1,6 @@
 import { getDownloadURL, ref, uploadBytesResumable } from '@firebase/storage';
 import { TaskState } from 'firebase/storage';
-import  React,{ useState, useCallback, FC } from 'react';
+import React, { useState, useCallback, FC } from 'react';
 import styled from 'styled-components';
 import { storage } from '../../../lib/firebase';
 import { useDropzone } from 'react-dropzone';
@@ -17,7 +17,7 @@ const Upload: FC = () => {
   const [clickable, setClickable] = useState<boolean>(false);
   const [src, setSrc] = useState<string>('');
 
-  const onDrop = useCallback( async(acceptedFiles: File[]) => {
+  const onDrop = useCallback(async (acceptedFiles: File[]) => {
     if (!acceptedFiles[0]) return;
 
     try {
@@ -28,27 +28,26 @@ const Upload: FC = () => {
       alert(error);
       console.error(error);
     }
-  },[]);
+  }, []);
 
   const onDropRejected = () => {
     alert('無効なファイルです。');
   };
 
-  const  { getRootProps, getInputProps } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop,
-    onDropRejected
-  })
+    onDropRejected,
+  });
 
   const handleUpload = (acceptedImg: any) => {
     try {
-      const storageRef = ref(storage, (`imgaes/${myFiles[0].name}`));
+      const storageRef = ref(storage, `imgaes/${myFiles[0].name}`);
       const uploadTask = uploadBytesResumable(storageRef, myFiles[0]);
-      
+
       uploadTask.on(
-        'state_changed', 
+        'state_changed',
         (snapshot: firebaseOnLoadProp) => {
-          const progress: number = 
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          const progress: number = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           console.log(`Upload is ${progress}% done`);
           switch (snapshot.state) {
             case 'paused':
@@ -75,10 +74,9 @@ const Upload: FC = () => {
         () => {
           //成功した時
           try {
-            getDownloadURL(uploadTask.snapshot.ref)
-              .then((downloadUrl: string) => {
-                console.log(`ダウンロードしたURL ${downloadUrl}`);
-              });
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl: string) => {
+              console.log(`ダウンロードしたURL ${downloadUrl}`);
+            });
           } catch (error: any) {
             switch (error.code) {
               case 'storage/object-not-found':
@@ -95,7 +93,7 @@ const Upload: FC = () => {
                 break;
             }
           }
-        }
+        },
       );
     } catch (error) {
       console.error(error);
@@ -115,9 +113,7 @@ const Upload: FC = () => {
 
   return (
     <Outline>
-      <UploadBox
-        {...getRootProps()}
-      >
+      <UploadBox {...getRootProps()}>
         {/* この中をタップすれば画像を選択できる */}
         <input {...getInputProps()} />
         {myFiles.length === 0 ? (
@@ -132,14 +128,10 @@ const Upload: FC = () => {
           </div>
         )}
       </UploadBox>
-      <UploadButton
-        disabled={!clickable}
-        type="submit"
-        onClick={() => handleUpload(myFiles)}
-        >
-          UPLOAD
-        </UploadButton>
-      </Outline>
+      <UploadButton disabled={!clickable} type='submit' onClick={() => handleUpload(myFiles)}>
+        UPLOAD
+      </UploadButton>
+    </Outline>
   );
 };
 
@@ -154,23 +146,23 @@ const Outline = styled.div`
   align-items: center;
   /* text-align: center; */
   border-radius: 5px;
-`
+`;
 
 const UploadBox = styled.div`
   /* height: 50vh; */
   background-color: #c6dbff;
-  border: 2px solid #6B7280;;	
+  border: 2px solid #6b7280;
   border-radius: 5px;
-`
+`;
 
 const GuideText = styled.p`
   padding: 1rem 0;
   display: flex;
   justify-content: center;
-`
+`;
 
 const UploadButton = styled.button`
   padding: 0.5rem 1rem;
   margin: 1rem 0;
   border-radius: 5px;
-`
+`;

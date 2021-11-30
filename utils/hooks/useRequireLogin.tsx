@@ -10,5 +10,5 @@ export const useRequireLogin = () => {
   useEffect(() => {
     if (AuthChecking) return;
     if (currentUser) router.push('/');
-  }, [currentUser])
+  }, [currentUser]);
 };

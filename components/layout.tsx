@@ -11,31 +11,37 @@ type Props = {
   beforeSubMessage?: string;
   afterSubMessage?: string;
   children?: React.ReactNode;
-}
+};
 
-export const Layout:VFC<Props> = ({ 
-    title,
-    description,
-    beforeSubMessage,
-    afterSubMessage,
-    children
-  }) => {
-  const pageTitel = title || 'ホームページタイトル'
-  const { currentUser ,logout } = useAuth();
+export const Layout: VFC<Props> = ({
+  title,
+  description,
+  beforeSubMessage,
+  afterSubMessage,
+  children,
+}) => {
+  const pageTitel = title || 'ホームページタイトル';
+  const { currentUser, logout } = useAuth();
 
   return (
     <>
       <Head>
-        <title>{ pageTitel }</title>
-        <meta name='description' content={ description || 'ホームページ概要' } />
+        <title>{pageTitel}</title>
+        <meta name='description' content={description || 'ホームページ概要'} />
       </Head>
       <header>
-        <h1>{ pageTitel }</h1>
-        {currentUser && <SubTitle>{beforeSubMessage}{ currentUser?.displayName }{afterSubMessage}</SubTitle>}
-          <HeaderNav>
-           <Link href='/'>Home</Link>
-           <button onClick={logout}>ログアウト</button>
-          </HeaderNav>
+        <h1>{pageTitel}</h1>
+        {currentUser && (
+          <SubTitle>
+            {beforeSubMessage}
+            {currentUser?.displayName}
+            {afterSubMessage}
+          </SubTitle>
+        )}
+        <HeaderNav>
+          <Link href='/'>Home</Link>
+          <button onClick={logout}>ログアウト</button>
+        </HeaderNav>
       </header>
       {/* <nav>
         <ul>
@@ -46,10 +52,10 @@ export const Layout:VFC<Props> = ({
           <li><Link href='/logPage'>ログ</Link></li>
         </ul>
       </nav> */}
-      <main>{ children }</main>
+      <main>{children}</main>
       <footer>&copy; ChaChatWine</footer>
     </>
-  )
+  );
 };
 
 const HeaderNav = styled.nav`
@@ -57,8 +63,8 @@ const HeaderNav = styled.nav`
   display: flex;
   align-items: flex-end;
   justify-content: space-around;
-`
+`;
 
 const SubTitle = styled.h3`
   color: #ffbe92;
-`
+`;

@@ -6,8 +6,8 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 
 type AuthContextType = {
   currentUser: User | null;
-  signUp: (email: string, password:string) => Promise<UserCredential>;
-  login: (email: string, password:string) => Promise<UserCredential>;
+  signUp: (email: string, password: string) => Promise<UserCredential>;
+  login: (email: string, password: string) => Promise<UserCredential>;
   logout: () => Promise<void>;
 };
 
@@ -31,7 +31,7 @@ const logout = () => {
   return auth.signOut();
 };
 
-const AuthContext = createContext<AuthContextType>({ currentUser: null, signUp, logout, login});
+const AuthContext = createContext<AuthContextType>({ currentUser: null, signUp, logout, login });
 
 //プロバイダーは状態を管理するものなので、変わらないsignUpなどは別でutilなどに切り出しても良いかも
 const AuthProvider = ({ children }: Props): JSX.Element => {
@@ -39,18 +39,18 @@ const AuthProvider = ({ children }: Props): JSX.Element => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    return auth.onAuthStateChanged((user: User | null) => { 
+    return auth.onAuthStateChanged((user: User | null) => {
       setCurrentUser(user);
       setIsLoading(false);
     });
-  },[]);
+  }, []);
 
   const value: AuthContextType = {
     currentUser,
     signUp,
     login,
-    logout
-  }
+    logout,
+  };
 
   return (
     <AuthContext.Provider value={value}>
