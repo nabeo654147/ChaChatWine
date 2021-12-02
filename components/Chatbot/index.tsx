@@ -1,30 +1,30 @@
-import React, {useState, useCallback, useEffect, useRef, VFC} from 'react';
+import React, { useState, useCallback, useEffect, useRef, VFC } from 'react';
 // import {db} from './firebase/index'
-import AnswersList from '../AnswersList';
-import Chats from '../Chats'
-import defaultDataset from '../dataset'
+import AnswersList from '../molecules/AnswersList';
+import Chats from '../molecules/Chats';
+import defaultDataset from '../dataset';
 import styled from 'styled-components';
-import SuggestionModal from "../SuggestionModal";
+import SuggestionModal from '../organisms/SuggestionModal';
 
 type Dataset = {
-  [currentId: string]:{
+  [currentId: string]: {
     answers: {
-      content: string,
-      nextId: string
-    }[],
-    question: string
-  }
-}
+      content: string;
+      nextId: string;
+    }[];
+    question: string;
+  };
+};
 
 type AnswersProps = {
-  content: string,
-  nextId: string
-}[]
+  content: string;
+  nextId: string;
+}[];
 
 type ChatsProps = {
-    type: 'question' | 'answers',
-    text: string
-}[]
+  type: 'question' | 'answers';
+  text: string;
+}[];
 
 const ChatBot: VFC = () => {
   const [answers, setAnswers] = useState<AnswersProps>([]); // 回答コンポーネントに表示するデータ
@@ -36,114 +36,123 @@ const ChatBot: VFC = () => {
 
   // ワインの説明モーダルを開くCallback関数
   const handleOpen = useCallback(() => {
-      setOpen(true)
-  },[setOpen]);
+    setOpen(true);
+  }, [setOpen]);
 
   // ワイン説明モーダルを閉じるCallback関数
   const handleClose = useCallback(() => {
-      setOpen(false)
-  },[setOpen]);
+    setOpen(false);
+  }, [setOpen]);
 
   // 新しいチャットを追加するCallback関数
-  const addChats = useCallback((chat) => {
-    setChats(prevChats => {
-      return [...prevChats, chat]
-    })
-  },[setChats]);
+  const addChats = useCallback(
+    (chat) => {
+      setChats((prevChats) => {
+        return [...prevChats, chat];
+      });
+    },
+    [setChats],
+  );
 
   // 次の質問をチャットエリアに表示する関数
-  const displayNextQuestion = (nextQuestionId: string, nextDataset: { question: any; answers: React.SetStateAction<AnswersProps>; }) => {
+  const displayNextQuestion = (
+    nextQuestionId: string,
+    nextDataset: { question: any; answers: React.SetStateAction<AnswersProps> },
+  ) => {
     // 選択された回答と次の質問をチャットに追加
     addChats({
       text: nextDataset.question,
-      type: 'question'
+      type: 'question',
     });
-   // 次の回答一覧をセット
-    setAnswers(nextDataset.answers)
+    // 次の回答一覧をセット
+    setAnswers(nextDataset.answers);
 
     // 現在の質問IDをセット
-    setCurrentId(nextQuestionId)
-  }
+    setCurrentId(nextQuestionId);
+  };
 
   // 回答が選択された時に呼ばれる関数
-  const selectAnswer = useCallback((selectedAnswer: string, nextQuestionId: string) => {
-    switch (true) {
-      // お問い合わせが選択された場合
-      case (nextQuestionId === 'contact'):
-        handleOpen();
-        break;
+  const selectAnswer = useCallback(
+    (selectedAnswer: string, nextQuestionId: string) => {
+      switch (true) {
+        // お問い合わせが選択された場合
+        case nextQuestionId === 'contact':
+          handleOpen();
+          break;
 
-      // リンクが選択された時
-      case /^https:*/.test(nextQuestionId):
-        const a = document.createElement('a');
+        // リンクが選択された時
+        case /^https:*/.test(nextQuestionId):
+          const a = document.createElement('a');
           a.href = nextQuestionId;
           a.target = '_blank';
           a.click();
           break;
 
-      // 選択された回答をchatsに追加
-      default:
-      // 現在のチャット一覧を取得
-      addChats({
-        text: selectedAnswer,
-        type: 'answer'
-      })
+        // 選択された回答をchatsに追加
+        default:
+          // 現在のチャット一覧を取得
+          addChats({
+            text: selectedAnswer,
+            type: 'answer',
+          });
 
-      setTimeout(() => displayNextQuestion(nextQuestionId, dataset[nextQuestionId]), 750)
+          setTimeout(() => displayNextQuestion(nextQuestionId, dataset[nextQuestionId]), 750);
           break;
       }
-    },[answers]);
+    },
+    [answers],
+  );
 
-    // 最初の質問をチャットエリアに表示する
+  // 最初の質問をチャットエリアに表示する
   useEffect(() => {
     setDataset(defaultDataset);
-    displayNextQuestion(currentId, defaultDataset.init)
-  },[])
+    displayNextQuestion(currentId, defaultDataset.init);
+  }, []);
 
-    // useEffect(() => {
-    //     (async() => {
-    //         const initDataset = {};
+  // useEffect(() => {
+  //     (async() => {
+  //         const initDataset = {};
 
-    //         // Fetch questions dataset from Firestore
-    //         await db.collection('questions').get().then(snapshots => {
-    //             snapshots.forEach(doc => {
-    //                 initDataset[doc.id] = doc.data()
-    //             })
-    //         });
+  //         // Fetch questions dataset from Firestore
+  //         await db.collection('questions').get().then(snapshots => {
+  //             snapshots.forEach(doc => {
+  //                 initDataset[doc.id] = doc.data()
+  //             })
+  //         });
 
-    //         // Firestoreから取得したデータセットを反映
-    //         setDataset(initDataset);
+  //         // Firestoreから取得したデータセットを反映
+  //         setDataset(initDataset);
 
-    //         // 最初の質問を表示
-    //         displayNextQuestion(currentId, initDataset[currentId])
-    //     })();
-    // }, []);
+  //         // 最初の質問を表示
+  //         displayNextQuestion(currentId, initDataset[currentId])
+  //     })();
+  // }, []);
 
   // 最新のチャットが見えるように、スクロール位置の頂点をスクロール領域の最下部に設定する
   useEffect(() => {
     if (scrollRef && scrollRef.current) {
       scrollRef.current.scrollTo({
-          top: scrollRef.current.offsetTop,
-          behavior: 'smooth'
+        top: scrollRef.current.offsetTop,
+        behavior: 'smooth',
       });
     }
-  },[answers])
+  }, [answers]);
 
-    return (
-        <Section >
-            <ChatBox ref={scrollRef} >
-                {/* {(Object.keys(dataset).length === 0) ? (
+  return (
+    <Section>
+      <ChatBox ref={scrollRef}>
+        {/* {(Object.keys(dataset).length === 0) ? (
                     <div />
                 ) : ( */}
-                    <>
-                        <Chats chats={chats} />
-                        <AnswersList answers={answers} select={selectAnswer}/>
-                    </>
-                {/* )} */}
-                <SuggestionModal open={open} handleClose={handleClose}/>
-            </ChatBox>
-        </Section>
-    )
+        <>
+          <Chats chats={chats} />
+          <AnswersList answers={answers} select={selectAnswer} />
+        </>
+        {/* )} */}
+        <SuggestionModal open={open} handleClose={handleClose} />
+      </ChatBox>
+    </Section>
+  );
 };
 
 export default ChatBot;
@@ -157,7 +166,7 @@ const Section = styled.section`
 
 const ChatBox = styled.div`
   background: #ffa4a4;
-  border: 1px solid rgba(0,0,0,0.3);
+  border: 1px solid rgba(0, 0, 0, 0.3);
   border-radius: 4px;
   box-sizing: border-box;
   height: 90%;
