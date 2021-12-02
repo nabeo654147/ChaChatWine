@@ -4,12 +4,14 @@ import Link from 'next/link';
 import styled from 'styled-components';
 
 import { Layout } from '../../components/layout';
-import { InputForm } from '../../components/molecules/InputForm';
+import { Input } from '../../components/molecules/Input';
 import { useAuth } from '../../lib/AuthContext';
 import { useRequireLogin } from '../../utils/hooks/useRequireLogin';
+import { getAuth } from '@firebase/auth';
 
 const LoginPage: NextPage = () => {
-  const { currentUser, login, logout } = useAuth();
+  const currentUser = getAuth().currentUser;
+  const { login, logout } = useAuth();
 
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -33,14 +35,14 @@ const LoginPage: NextPage = () => {
     <Layout title='Login Page' description='ログインページ'>
       <FormWrap>
         <FormBox>
-          <InputForm
+          <Input
             ref={emailRef}
             name={'email'}
             type={'email'}
             placeholder={'Email'}
             inputFormTitle={'Email'}
           />
-          <InputForm
+          <Input
             ref={passwordRef}
             name={'password'}
             type={'password'}
