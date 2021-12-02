@@ -4,12 +4,14 @@ import Link from 'next/link';
 import styled from 'styled-components';
 
 import { Layout } from '../components/layout';
-import { InputForm } from '../components/molecules/InputForm';
+import { Input } from '../components/molecules/Input';
 import { useAuth } from '../lib/AuthContext';
 import { useRequireLogin } from '../utils/hooks/useRequireLogin';
+import { getAuth } from '@firebase/auth';
 
 const LoginPage: NextPage = () => {
-  const { currentUser, login, logout } = useAuth();
+  const currentUser = getAuth().currentUser;
+  const { login, logout } = useAuth();
 
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -18,9 +20,9 @@ const LoginPage: NextPage = () => {
 
   useRequireLogin();
 
-  const handleLogin = async() => {
+  const handleLogin = async () => {
     setLoading(true);
-    try{
+    try {
       await login(emailRef.current!.value, passwordRef.current!.value);
     } catch (err) {
       alert('このユーザーは登録されていません');
@@ -30,34 +32,41 @@ const LoginPage: NextPage = () => {
   };
 
   return (
-    <Layout 
-      title='Login Page'
-      description='ログインページ'
-    >
-    <FormWrap>
-    <FormBox>
-      <InputForm
-        ref={emailRef}
-        name={'email'}
-        type={'email'}
-        placeholder={'Email'}
-        inputFormTitle={'Email'}
-      />
-      <InputForm
-        ref={passwordRef}
-        name={'password'}
-        type={'password'}
-        placeholder={'Password'}
-        inputFormTitle={'Password'}
-      />
-        <LoginButton onClick={handleLogin} disabled={ loading  || currentUser !== null || undefined } type='submit'>ログイン</LoginButton>
-        <Link href='/signUpPage'><a>新規登録</a></Link>
-      </FormBox>
+    <Layout title='Login Page' description='ログインページ'>
+      <FormWrap>
+        <FormBox>
+          <Input
+            ref={emailRef}
+            name={'email'}
+            type={'email'}
+            placeholder={'Email'}
+            inputFormTitle={'Email'}
+          />
+          <Input
+            ref={passwordRef}
+            name={'password'}
+            type={'password'}
+            placeholder={'Password'}
+            inputFormTitle={'Password'}
+          />
+          <LoginButton
+            onClick={handleLogin}
+            disabled={loading || currentUser !== null || undefined}
+            type='submit'
+          >
+            ログイン
+          </LoginButton>
+          <Link href='/signUpPage'>
+            <a>新規登録</a>
+          </Link>
+        </FormBox>
       </FormWrap>
-      <button onClick={logout} disabled={ loading || !currentUser} >ログアウト</button>
+      <button onClick={logout} disabled={loading || !currentUser}>
+        ログアウト
+      </button>
     </Layout>
-  )
-}
+  );
+};
 
 export default LoginPage;
 
@@ -71,16 +80,16 @@ const FormBox = styled.form`
   border: 2px solid #000000;
   margin: auto;
   background: #ffb67a;
-`
+`;
 
 const LoginButton = styled.button`
   border-radius: 40%;
   font-size: 2rem;
-`
+`;
 
 const FormWrap = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 3rem 0;
-`
+`;

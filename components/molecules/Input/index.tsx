@@ -1,16 +1,17 @@
-import React,{ forwardRef } from 'react';
+import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 
 type Props = {
-   name: string;
-   type: string;
-   placeholder: string;
-   inputFormTitle: string;
+  name: string;
+  type: string;
+  value?: string | number;
+  min?: string;
+  max?: string;
+  placeholder: string;
+  inputFormTitle: string;
 };
 
-export const InputForm = forwardRef<HTMLInputElement, Props>((
-  props: Props, ref
-) => {
+export const Input = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
   return (
     <FormWrap>
       <label htmlFor={props.type}>{props.inputFormTitle}</label>
@@ -18,10 +19,13 @@ export const InputForm = forwardRef<HTMLInputElement, Props>((
         ref={ref}
         name={props.name}
         type={props.type}
+        value={props.value}
+        min={props.min}
+        max={props.max}
         placeholder={props.placeholder}
       />
     </FormWrap>
-  )
+  );
 });
 
 const FormWrap = styled.div`
@@ -32,4 +36,4 @@ const FormWrap = styled.div`
     border-radius: 0.3rem;
     font-size: 1.5rem;
   }
-`
+`;
