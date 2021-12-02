@@ -3,7 +3,7 @@ module.exports = {
   reactStrictMode: true,
   experimental: {
     // Enables the styled-components SWC transform
-    styledComponents: true
+    styledComponents: true,
   },
   env: {
     FIREBASE_KEY: process.env.FIREBASE_KEY,
@@ -12,6 +12,6 @@ module.exports = {
     FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID,
     FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET,
     FIREBASE_SENDER_ID: process.env.FIREBASE_SENDER_ID,
-    FIREBASE_APPID: process.env.FIREBASE_APPID
-  }
-}
+    FIREBASE_APPID: process.env.FIREBASE_APPID,
+  },
+};

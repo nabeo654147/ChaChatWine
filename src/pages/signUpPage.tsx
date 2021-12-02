@@ -2,10 +2,10 @@ import type { NextPage } from 'next';
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 
-import { Layout } from '../components/layout';
-import { Input } from '../components/molecules/Input';
-import { useAuth } from '../lib/AuthContext';
-import { useRequireLogin } from '../utils/hooks/useRequireLogin';
+import { Layout } from '../../components/layout';
+import { Input } from '../../components/molecules/Input';
+import { useAuth } from '../../lib/AuthContext';
+import { useRequireLogin } from '../../utils/hooks/useRequireLogin';
 import { getAuth, updateProfile } from '@firebase/auth';
 import { doc, getFirestore, setDoc } from 'firebase/firestore';
 

@@ -1,10 +1,6 @@
-import React, { useState, useCallback, FC, SetStateAction, Dispatch } from 'react';
+import React, { useCallback, FC, SetStateAction, Dispatch } from 'react';
 import { useDropzone } from 'react-dropzone';
 import Image from 'next/dist/client/image';
-import { getDownloadURL, ref, uploadBytesResumable } from '@firebase/storage';
-import { getAuth } from '@firebase/auth';
-import { TaskState } from 'firebase/storage';
-import { storage } from '../../../lib/firebase';
 import styled from 'styled-components';
 
 type uploadProps = {
@@ -15,8 +11,6 @@ type uploadProps = {
 };
 
 export const Uploader: FC<uploadProps> = ({ src, myFiles, setMyFiles, setSrc }) => {
-  const currentUser = getAuth().currentUser;
-
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     if (!acceptedFiles[0]) return;
 

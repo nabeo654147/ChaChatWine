@@ -2,21 +2,19 @@ import React, { VFC } from 'react';
 import styled from 'styled-components';
 
 type Props = {
-    answer: {
-        content: string,
-        nextId: string
-    },
-    select: (selectAnswer:string, nextQuestionId: string) => void
-}
+  answer: {
+    content: string;
+    nextId: string;
+  };
+  select: (selectAnswer: string, nextQuestionId: string) => void;
+};
 
-const Answer: VFC<Props> = ({ answer, select}) => {
-
-    return (
-        <AnswerButton 
-                onClick={() => select(answer.content, answer.nextId)}>
-            {answer.content}
-        </AnswerButton>
-    );
+const Answer: VFC<Props> = ({ answer, select }) => {
+  return (
+    <AnswerButton onClick={() => select(answer.content, answer.nextId)}>
+      {answer.content}
+    </AnswerButton>
+  );
 };
 
 export default Answer;
@@ -31,4 +29,4 @@ const AnswerButton = styled.button`
   :hover {
     opacity: 0.8;
   }
-`
+`;

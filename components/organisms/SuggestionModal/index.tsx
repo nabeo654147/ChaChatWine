@@ -1,11 +1,11 @@
 import React, { VFC } from 'react';
-import styled  from 'styled-components';
+import styled from 'styled-components';
 import Avatar from '../../atoms/Avatar';
 
 type ModalProps = {
-  open: boolean,
-  handleClose: () => void
-}
+  open: boolean;
+  handleClose: () => void;
+};
 
 const SuggestionModal: VFC<ModalProps> = ({ open, handleClose }) => {
   return (
@@ -13,15 +13,17 @@ const SuggestionModal: VFC<ModalProps> = ({ open, handleClose }) => {
       <Modal>
         <h3>おすすめのワインはこちらです！</h3>
         <Avatar src={'/img/corkboy.jpg'} size={300} />
-        <p>サンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキスト</p>
+        <p>
+          サンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキスト
+        </p>
         <button onClick={handleClose}>閉じる</button>
       </Modal>
     </Overlay>
-  )
-}
+  );
+};
 export default SuggestionModal;
 
-const Overlay = styled.div<{open:boolean}>`
+const Overlay = styled.div<{ open: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -31,7 +33,7 @@ const Overlay = styled.div<{open:boolean}>`
   display: flex;
   align-items: center;
   justify-content: center;
-  visibility: ${props => props.open === true ? 'unset' : 'hidden'}
+  visibility: ${(props) => (props.open === true ? 'unset' : 'hidden')};
 `;
 
 const Modal = styled.div`

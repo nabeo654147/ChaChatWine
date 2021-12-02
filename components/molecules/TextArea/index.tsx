@@ -1,30 +1,27 @@
-import React,{ forwardRef } from 'react';
+import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 
 type Props = {
-   name?: string;
-   placeholder?: string;
-   textareaTitle?: string;
-   rows?: number;
-   cols?: number;
+  name?: string;
+  placeholder?: string;
+  textareaTitle?: string;
+  rows?: number;
+  cols?: number;
 };
 
-export const Textarea = forwardRef<HTMLTextAreaElement, Props>((
-  props: Props, 
-  ref
-) => {
+export const Textarea = forwardRef<HTMLTextAreaElement, Props>((props: Props, ref) => {
   return (
     <FormWrap>
       <p>{props.textareaTitle}</p>
-        <textarea
-          ref={ref}
-          name={props.name}
-          placeholder={props.placeholder}
-          rows={props.rows}
-          cols={props.cols}
-        />
+      <textarea
+        ref={ref}
+        name={props.name}
+        placeholder={props.placeholder}
+        rows={props.rows}
+        cols={props.cols}
+      />
     </FormWrap>
-  )
+  );
 });
 
 const FormWrap = styled.div`
@@ -32,5 +29,5 @@ const FormWrap = styled.div`
     font-size: 1rem;
     width: 100%;
     border-radius: 0.3rem;
-  } 
-`
+  }
+`;

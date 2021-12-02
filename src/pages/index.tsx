@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import Link from 'next/link';
 import React from 'react';
 import styled from 'styled-components';
-import { Layout } from '../components/layout';
+import { Layout } from '../../components/layout';
 import { getAuth } from '@firebase/auth';
 
 const Home: NextPage = () => {

@@ -1,5 +1,5 @@
 import React, { VFC } from 'react';
-import Image from 'next/image'
+import Image from 'next/image';
 import styled from 'styled-components';
 
 type AvatarProps = {
@@ -9,13 +9,13 @@ type AvatarProps = {
 };
 
 const Avatar: VFC<AvatarProps> = ({ ...props }) => {
-  return <AvatarStyle {...props} src={props.src} width={props.size} height={props.size}/>
+  return <AvatarStyle {...props} src={props.src} width={props.size} height={props.size} />;
 };
 
 const AvatarStyle = styled(Image)<AvatarProps>`
-  border-radius: ${props => props.shape === 'square'? undefined :50}%;
-  width: ${props => props.size}px;
-  height: ${props => props.size}px;
+  border-radius: ${(props) => (props.shape === 'square' ? undefined : 50)}%;
+  width: ${(props) => props.size}px;
+  height: ${(props) => props.size}px;
 `;
 
 export default Avatar;
