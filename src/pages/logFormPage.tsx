@@ -1,12 +1,12 @@
 import { NextPage } from 'next';
 import React from 'react';
 import { Layout } from '../../components/layout';
-import LogPageItems from '../../components/molecules/LogPageItems';
+import LogForm from '../../components/organisms/LogForm';
 
 const logPage: NextPage = () => {
   return (
-    <Layout title={'Log Page'} description={'記録ページ'} afterSubMessage={'の保管庫'}>
-      <LogPageItems />
+    <Layout title={'LogForm Page'} description={'記録ページ'} afterSubMessage={'の記録ページ'}>
+      <LogForm />
     </Layout>
   );
 };
