@@ -7,7 +7,7 @@ import { Uploader } from '../../../components/organisms/Uploader';
 import { Selecter } from '../../../components/molecules/Selecter';
 import { Button } from '../../../components/atoms/Button';
 import styled from 'styled-components';
-import { setDoc, doc, Timestamp } from '@firebase/firestore';
+import { addDoc, collection, doc, Timestamp } from '@firebase/firestore';
 import { db, storage } from '../../../lib/firebase';
 import { getAuth } from '@firebase/auth';
 import { ref, uploadBytesResumable, getDownloadURL, TaskState } from 'firebase/storage';
@@ -35,35 +35,34 @@ const LogForm: VFC = () => {
   const acidityRef = useRef<HTMLInputElement>(null);
   const astringencyRef = useRef<HTMLInputElement>(null);
   const afterglowRef = useRef<HTMLInputElement>(null);
-  const uploadRef = useRef<HTMLInputElement>(null);
   const commentRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     try {
-      await setDoc(
-        doc(db, 'logData', `${currentUser?.uid}`),
+      await addDoc(
+        collection(db, 'logData'),
         {
-          [`logValues(${Timestamp.now()})`]: {
-            // timestamp: serverTimestamp()
-            // recommendation: values.recommendation,
-            name: nameRef.current?.value,
-            area: areaRef.current?.value,
-            vintage: vintageRef.current?.value,
-            price: priceRef.current?.value,
-            date: dateRef.current?.value,
-            type: typeRef.current?.value,
-            aroma: aromaRef.current?.value,
-            sweetness: sweetnessRef.current?.value,
-            acidity: acidityRef.current?.value,
-            astringency: astringencyRef.current?.value,
-            afterglow: afterglowRef.current?.value,
-            favorability: favorite,
-            comment: commentRef.current?.value,
-          },
+          // recommendation: values.recommendation,
+          uid: currentUser?.uid,
+          createAt: Timestamp.now().toDate(),
+          name: nameRef.current?.value,
+          area: areaRef.current?.value,
+          vintage: Number(vintageRef.current?.value),
+          price: Number(priceRef.current?.value),
+          date: dateRef.current?.value,
+          favorability: favorite,
+          type: typeRef.current?.value,
+          photoURL: src,
+          aroma: Number(aromaRef.current?.value),
+          sweetness: Number(sweetnessRef.current?.value),
+          acidity: Number(acidityRef.current?.value),
+          astringency: Number(astringencyRef.current?.value),
+          afterglow: Number(afterglowRef.current?.value),
+          comment: commentRef.current?.value,
         },
-        { merge: true },
+        // { merge: true },
       );
     } catch (error) {
       console.log(error);
