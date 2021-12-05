@@ -1,16 +1,13 @@
-import { useState, VFC } from 'react';
+import { VFC } from 'react';
 import styled from 'styled-components';
 
 type ListProps = {
   listTitle: string;
+  handleSwitch: () => void;
 };
 
-export const Log: VFC<ListProps> = ({ listTitle }) => {
-  const [open, setOpen] = useState<boolean>(false);
-
-  const handleOpen = () => setOpen(!open);
-
-  return <Li onClick={handleOpen}>{listTitle}</Li>;
+export const Log: VFC<ListProps> = ({ listTitle, handleSwitch }) => {
+  return <Li onClick={handleSwitch}>{listTitle}</Li>;
 };
 
 const Li = styled.li`

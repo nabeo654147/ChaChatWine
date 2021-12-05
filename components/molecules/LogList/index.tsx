@@ -1,20 +1,19 @@
-import { useState, VFC } from 'react';
+import { VFC } from 'react';
 import { Log } from '../../atoms/Log';
 import styled from 'styled-components';
+import { LogItemProps } from '../LogPageItems';
 
 type ListProps = {
-  listTitle: string;
+  lists: LogItemProps[];
+  handleSwitch: () => void;
 };
 
-export const LogList: VFC<ListProps> = ({ listTitle }) => {
-  const [open, setOpen] = useState<boolean>(false);
-
-  const handleOpen = () => setOpen(!open);
-
+export const LogList: VFC<ListProps> = ({ lists, handleSwitch }) => {
   return (
     <Ul>
-      {}
-      <Log listTitle={listTitle}></Log>
+      {lists.map((list) => {
+        return <Log listTitle={list.date} key={list.createAt} handleSwitch={handleSwitch}></Log>;
+      })}
     </Ul>
   );
 };
@@ -29,4 +28,7 @@ const Ul = styled.ul`
   vertical-align: middle;
   color: #505050;
   border-radius: 15px 0px 0px 15px; /*左側の角丸く*/
+  &:hover {
+    cursor: pointer;
+  }
 `;
