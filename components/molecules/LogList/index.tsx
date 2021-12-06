@@ -5,30 +5,37 @@ import { LogItemProps } from '../LogPageItems';
 
 type ListProps = {
   lists: LogItemProps[];
-  handleSwitch: () => void;
+  handleOpen: (id: string) => void;
 };
 
-export const LogList: VFC<ListProps> = ({ lists, handleSwitch }) => {
+export const LogList: VFC<ListProps> = ({ lists, handleOpen }) => {
   return (
     <Ul>
       {lists.map((list) => {
-        return <Log listTitle={list.date} key={list.createAt} handleSwitch={handleSwitch}></Log>;
+        return (
+          <Log
+            listTitle={`${list.name} / ${list.date}`}
+            key={list.createAt}
+            list={list}
+            handleSwitch={handleOpen}
+          ></Log>
+        );
       })}
     </Ul>
   );
 };
 
 const Ul = styled.ul`
-  position: relative;
-  list-style-type: none !important; /*ポチ消す*/
-  padding: 0.5em 0.5em 0.5em 0.5em;
-  margin-bottom: 5px;
-  line-height: 1.5;
-  background: #dbebf8;
-  vertical-align: middle;
-  color: #505050;
-  border-radius: 15px 0px 0px 15px; /*左側の角丸く*/
   &:hover {
     cursor: pointer;
+  }
+  li {
+    position: relative;
+    padding: 0.5em 0.5em 0.5em 0.5em;
+    line-height: 1.5;
+    background: #dbebf8;
+    color: #505050;
+    border-radius: 15px 0px 0px 15px; /*左側の角丸く*/
+    /* margin-bottom: 1rem; */
   }
 `;
