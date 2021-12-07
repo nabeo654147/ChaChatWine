@@ -5,6 +5,7 @@ import { collection, getDocs, query, where, orderBy, limit } from 'firebase/fire
 import { db } from '../../../lib/firebase';
 import { getAuth } from '@firebase/auth';
 import { LogList } from '../LogList';
+import { Pentagon } from '../../organisms/PentagonGraph';
 
 type ModalProps = {
   open?: boolean;
@@ -81,17 +82,19 @@ const LogPageItems: VFC = () => {
               <Overlay switchBtn={switchBtn} key={item.createAt}>
                 <Modal>
                   <>
-                    <Avatar src={item.photoURL} size={300} />
-                    {/* <Pentagon
-          data={[
-            { subject: '香り', value: item.aroma, fullMark: 5 },
-            { subject: '甘味', value: item.sweetness, fullMark: 5 },
-            { subject: '酸味', value: item.acidity, fullMark: 5 },
-            { subject: '渋味', value: item.astringency, fullMark: 5 },
-            { subject: '余韻', value: item.afterglow, fullMark: 5 },
-          ]}
-          /> */}
+                    <AvatarStyle>
+                      <Avatar src={item.photoURL} size={300} />
+                    </AvatarStyle>
                     <p>{item.name}</p>
+                    <Pentagon
+                      data={[
+                        { subject: '香り', value: item.aroma, fullMark: 5 },
+                        { subject: '甘味', value: item.sweetness, fullMark: 5 },
+                        { subject: '酸味', value: item.acidity, fullMark: 5 },
+                        { subject: '渋味', value: item.astringency, fullMark: 5 },
+                        { subject: '余韻', value: item.afterglow, fullMark: 5 },
+                      ]}
+                    />
                     <p>{item.area}</p>
                     <p>{item.vintage}年</p>
                     <p>¥{item.price}</p>
@@ -125,11 +128,13 @@ const LogPageItems: VFC = () => {
 export default LogPageItems;
 
 const Overlay = styled.div<{ switchBtn: boolean }>`
+  overflow-y: scroll;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  padding: 0.5rem;
   background-color: #3f3f3f7f;
   display: flex;
   align-items: center;
@@ -150,4 +155,16 @@ const Modal = styled.div`
 const StarIcon = styled.span`
   font-size: 2rem;
   color: #fdf900;
+`;
+
+const AvatarStyle = styled.div`
+  img {
+    position: unset !important;
+    inset: unset !important;
+    height: 18rem !important;
+    width: 18rem !important;
+  }
+  span {
+    margin-top: 2rem !important;
+  }
 `;

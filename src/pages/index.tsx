@@ -23,12 +23,17 @@ const Home: NextPage = () => {
         <NavBox>
           <ul>
             <li>
-              <Link href='/chatPage'>おすすめのワインを聞く</Link>
+              <Link href='/chatPage'>🍇おすすめのワインを聞く</Link>
             </li>
             {currentUser ? (
-              <li>
-                <Link href='/logPage'>記録ページ</Link>
-              </li>
+              <>
+                <li>
+                  <Link href='/logFormPage'>🗒記録ページ</Link>
+                </li>
+                <li>
+                  <Link href='/logPage'>📕記録セラー</Link>
+                </li>
+              </>
             ) : (
               <>
                 <li>
