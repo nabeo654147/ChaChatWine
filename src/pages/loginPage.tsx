@@ -10,8 +10,7 @@ import { useRequireLogin } from '../../utils/hooks/useRequireLogin';
 import { getAuth } from '@firebase/auth';
 
 const LoginPage: NextPage = () => {
-  const currentUser = getAuth().currentUser;
-  const { login, logout } = useAuth();
+  const { isAnonymous, login } = useAuth();
 
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -51,7 +50,7 @@ const LoginPage: NextPage = () => {
           />
           <LoginButton
             onClick={handleLogin}
-            disabled={loading || currentUser !== null || undefined}
+            disabled={loading || isAnonymous === false || undefined}
             type='submit'
           >
             ログイン
@@ -61,9 +60,6 @@ const LoginPage: NextPage = () => {
           </Link>
         </FormBox>
       </FormWrap>
-      <button onClick={logout} disabled={loading || !currentUser}>
-        ログアウト
-      </button>
     </Layout>
   );
 };
@@ -79,7 +75,7 @@ const FormBox = styled.form`
   align-items: center;
   border: 2px solid #000000;
   margin: auto;
-  background: #ffb67a;
+  background: #ff6f5c9f;
 `;
 
 const LoginButton = styled.button`

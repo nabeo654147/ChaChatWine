@@ -6,14 +6,13 @@ import { Layout } from '../../components/layout';
 import { Input } from '../../components/molecules/Input';
 import { useAuth } from '../../lib/AuthContext';
 import { useRequireLogin } from '../../utils/hooks/useRequireLogin';
-import { getAuth, updateProfile } from '@firebase/auth';
+import { updateProfile } from '@firebase/auth';
 import { doc, getFirestore, setDoc } from 'firebase/firestore';
 
 const SignUpPage: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
-  const currentUser = getAuth().currentUser;
-  const { signUp } = useAuth();
+  const { isAnonymous, signUp } = useAuth();
   const db = getFirestore();
 
   const userNameRef = useRef<HTMLInputElement>(null);
@@ -66,7 +65,7 @@ const SignUpPage: NextPage = () => {
         />
         <button
           onClick={handleSignUp}
-          disabled={loading || currentUser !== null || undefined}
+          disabled={loading || isAnonymous === false || undefined}
           type='submit'
         >
           登録

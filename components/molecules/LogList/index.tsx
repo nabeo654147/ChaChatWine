@@ -35,7 +35,6 @@ const Ul = styled.ul`
     line-height: 1.5;
     background: #dbebf8;
     color: #505050;
-    border-radius: 15px 0px 0px 15px; /*左側の角丸く*/
-    /* margin-bottom: 1rem; */
+    border-radius: 15px 0px 0px 15px;
   }
 `;

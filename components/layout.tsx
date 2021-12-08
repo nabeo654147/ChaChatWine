@@ -1,4 +1,3 @@
-import type { NextPage } from 'next';
 import React, { VFC } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -23,7 +22,12 @@ export const Layout: VFC<Props> = ({
 }) => {
   const pageTitel = title || 'ホームページタイトル';
   const currentUser = getAuth().currentUser;
-  const { logout } = useAuth();
+  const { isAnonymous, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    location.reload();
+  };
 
   return (
     <>
@@ -33,7 +37,7 @@ export const Layout: VFC<Props> = ({
       </Head>
       <header>
         <h1>{pageTitel}</h1>
-        {currentUser && (
+        {isAnonymous === false && (
           <SubTitle>
             {beforeSubMessage}
             {currentUser?.displayName}
@@ -42,7 +46,7 @@ export const Layout: VFC<Props> = ({
         )}
         <HeaderNav>
           <Link href='/'>Home</Link>
-          <button onClick={logout}>ログアウト</button>
+          {!isAnonymous && <button onClick={handleLogout}>ログアウト</button>}
         </HeaderNav>
       </header>
       <main>{children}</main>

@@ -3,10 +3,10 @@ import Link from 'next/link';
 import React from 'react';
 import styled from 'styled-components';
 import { Layout } from '../../components/layout';
-import { getAuth } from '@firebase/auth';
+import { useAuth } from '../../lib/AuthContext';
 
 const Home: NextPage = () => {
-  const currentUser = getAuth().currentUser;
+  const { isAnonymous } = useAuth();
 
   return (
     <>
@@ -25,7 +25,7 @@ const Home: NextPage = () => {
             <li>
               <Link href='/chatPage'>🍇おすすめのワインを聞く</Link>
             </li>
-            {currentUser ? (
+            {isAnonymous === false ? (
               <>
                 <li>
                   <Link href='/logFormPage'>🗒記録ページ</Link>

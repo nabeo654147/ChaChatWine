@@ -1,14 +1,13 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { getAuth } from '@firebase/auth';
+import { useAuth } from '../../lib/AuthContext';
 
 export const useRequireLogin = () => {
-  const currentUser = getAuth().currentUser;
+  const { isAnonymous } = useAuth();
   const router = useRouter();
-  const AuthChecking = currentUser === undefined;
 
   useEffect(() => {
-    if (AuthChecking) return;
-    if (currentUser) router.push('/');
-  }, [currentUser]);
+    if (isAnonymous === true) return;
+    if (isAnonymous === false) router.push('/');
+  }, [isAnonymous]);
 };
