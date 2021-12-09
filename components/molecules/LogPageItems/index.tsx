@@ -7,11 +7,6 @@ import { getAuth } from '@firebase/auth';
 import { LogList } from '../LogList';
 import { Pentagon } from '../../organisms/PentagonGraph';
 
-type ModalProps = {
-  open?: boolean;
-  handleClose?: () => void;
-};
-
 export type LogItemProps = {
   uid: string;
   createAt: string;
@@ -83,7 +78,11 @@ const LogPageItems: VFC = () => {
                 <Modal>
                   <>
                     <AvatarStyle>
-                      <Avatar src={item.photoURL} size={300} />
+                      {item.photoURL ? (
+                        <Avatar src={item.photoURL} size={300} />
+                      ) : (
+                        <Avatar src={'/img/wine-stone.jpg'} size={300} />
+                      )}
                     </AvatarStyle>
                     <p>{item.name}</p>
                     <Pentagon
