@@ -41,36 +41,31 @@ const LogForm: VFC = () => {
     e.preventDefault();
 
     try {
-      await addDoc(
-        collection(db, 'logData'),
-        {
-          // recommendation: values.recommendation,
-          uid: currentUser?.uid,
-          createAt: Timestamp.now().toDate(),
-          name: nameRef.current?.value,
-          area: areaRef.current?.value,
-          vintage: Number(vintageRef.current?.value),
-          price: Number(priceRef.current?.value),
-          date: dateRef.current?.value,
-          favorability: favorite,
-          type: typeRef.current?.value,
-          photoURL: src,
-          aroma: Number(aromaRef.current?.value),
-          sweetness: Number(sweetnessRef.current?.value),
-          acidity: Number(acidityRef.current?.value),
-          astringency: Number(astringencyRef.current?.value),
-          afterglow: Number(afterglowRef.current?.value),
-          comment: commentRef.current?.value,
-        },
-        // { merge: true },
-      );
+      await addDoc(collection(db, 'logData'), {
+        // recommendation: values.recommendation,
+        uid: currentUser?.uid,
+        createAt: Timestamp.now().toDate(),
+        name: nameRef.current?.value,
+        area: areaRef.current?.value,
+        vintage: Number(vintageRef.current?.value),
+        price: Number(priceRef.current?.value),
+        date: dateRef.current?.value,
+        favorability: favorite,
+        type: typeRef.current?.value,
+        aroma: Number(aromaRef.current?.value),
+        sweetness: Number(sweetnessRef.current?.value),
+        acidity: Number(acidityRef.current?.value),
+        astringency: Number(astringencyRef.current?.value),
+        afterglow: Number(afterglowRef.current?.value),
+        comment: commentRef.current?.value,
+      });
     } catch (error) {
       console.log(error);
       return Promise.reject(error);
     }
 
     try {
-      const storageRef = ref(storage, `imgaes/logs/${currentUser?.uid}/${myFiles[0].name}`);
+      const storageRef = ref(storage, `imagaes/logs/${currentUser?.uid}/${myFiles[0].name}`);
       const uploadTask = uploadBytesResumable(storageRef, myFiles[0]);
 
       uploadTask.on(

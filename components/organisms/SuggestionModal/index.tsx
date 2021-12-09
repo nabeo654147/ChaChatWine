@@ -4,19 +4,47 @@ import Avatar from '../../atoms/Avatar';
 
 type ModalProps = {
   open: boolean;
-  handleClose: () => void;
+  loading: boolean;
+  photoURL: string;
+  items: SuggestionData[] | null;
+  handleClose?: () => void;
 };
 
-const SuggestionModal: VFC<ModalProps> = ({ open, handleClose }) => {
+export type SuggestionData = {
+  wine: string;
+  description: string;
+};
+
+const SuggestionModal: VFC<ModalProps> = ({ open, loading, items, photoURL, handleClose }) => {
   return (
     <Overlay open={open}>
       <Modal>
-        <h3>おすすめのワインはこちらです！</h3>
-        <Avatar src={'/img/corkboy.jpg'} size={300} />
-        <p>
-          サンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキスト
-        </p>
-        <button onClick={handleClose}>閉じる</button>
+        {loading === true ? (
+          <h3>考え中...</h3>
+        ) : (
+          <>
+            <h3>おすすめのワインはこちらです！</h3>
+            {items &&
+              items.map((item, i) => {
+                return (
+                  <React.Fragment key={i}>
+                    <Avatar src={photoURL} alt={'/img/loading.jpeg'} size={300} />
+                    <p>{item.description}</p>
+                  </React.Fragment>
+                );
+              })}
+            <button onClick={handleClose}>閉じる</button>
+            {/* <a
+              // href={'https://www.aeondewine.com/shop/category/category.aspx?category=a106'}
+              href={
+                'https://www.amazon.co.jp/gp/browse.html?rw_useCurrentProtocol=1&node=71649051&ref_=amb_link_9Qx-yuTyRjmSCAxBbdHTRQ_62'
+              }
+              target='_blank'
+            >
+              ネットを見に行く
+            </a> */}
+          </>
+        )}
       </Modal>
     </Overlay>
   );

@@ -13,8 +13,8 @@ type Props = {
 const AnswersList: VFC<Props> = ({ answers, select }) => {
   return (
     <AnswersBox>
-      {answers.map((key, index) => {
-        return <Answer answer={answers[index]} key={index.toString()} select={select} />;
+      {answers.map((answer, index) => {
+        return <Answer answer={answer} key={index.toString()} select={select} />;
       })}
     </AnswersBox>
   );
