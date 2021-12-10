@@ -28,7 +28,7 @@ const SuggestionModal: VFC<ModalProps> = ({ open, loading, items, photoURL, hand
               items.map((item, i) => {
                 return (
                   <React.Fragment key={i}>
-                    <Avatar src={photoURL} alt={'/img/loading.jpeg'} size={300} />
+                    <Avatar src={photoURL} alt={'wineImage'} size={300} />
                     <p>{item.description}</p>
                   </React.Fragment>
                 );
@@ -65,7 +65,7 @@ const Overlay = styled.div<{ open: boolean }>`
 `;
 
 const Modal = styled.div`
-  z-index: 2;
+  z-index: 5;
   width: 80%;
   padding: 1em;
   background: #fff;

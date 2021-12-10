@@ -7,7 +7,7 @@ type Props = {
   value?: string | number;
   min?: string;
   max?: string;
-  placeholder: string;
+  placeholder?: string;
   inputFormTitle: string;
 };
 

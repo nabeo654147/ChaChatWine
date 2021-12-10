@@ -8,9 +8,10 @@ type uploadProps = {
   setSrc: Dispatch<SetStateAction<string>>;
   myFiles: File[];
   setMyFiles: Dispatch<SetStateAction<File[]>>;
+  setPhotoURL: Dispatch<SetStateAction<File[]>>;
 };
 
-export const Uploader: FC<uploadProps> = ({ src, myFiles, setMyFiles, setSrc }) => {
+export const Uploader: FC<uploadProps> = ({ src, myFiles, setMyFiles, setSrc, setPhotoURL }) => {
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     if (!acceptedFiles[0]) return;
 
@@ -36,6 +37,7 @@ export const Uploader: FC<uploadProps> = ({ src, myFiles, setMyFiles, setSrc }) 
     const file = files[0];
     if (files === null || file === null) return;
 
+    setPhotoURL(file);
     let reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
@@ -71,9 +73,12 @@ const Outline = styled.div`
 `;
 
 const UploadBox = styled.div`
-  background-color: #c6dbff;
+  height: 20rem;
+  background-color: #ffd6c6;
   border: 2px solid #6b7280;
   border-radius: 5px;
+  display: flex;
+  align-items: center;
   p {
     padding: 1rem;
     text-align: center;
