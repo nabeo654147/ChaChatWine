@@ -5,17 +5,18 @@ import styled from 'styled-components';
 type AvatarProps = {
   src: string;
   size: number;
+  alt?: string;
   shape?: 'circle' | 'square';
 };
 
-const Avatar: VFC<AvatarProps> = ({ ...props }) => {
-  return <AvatarStyle {...props} src={props.src} width={props.size} height={props.size} />;
+const Avatar: VFC<AvatarProps> = ({ src, size, alt, shape }) => {
+  return <AvatarStyle src={src} alt={alt} width={size} height={size} size={size} />;
 };
 
 const AvatarStyle = styled(Image)<AvatarProps>`
-  border-radius: ${(props) => (props.shape === 'square' ? undefined : 50)}%;
-  width: ${(props) => props.size}px;
-  height: ${(props) => props.size}px;
+  border-radius: ${({ shape }) => (shape === 'square' ? undefined : 50)}%;
+  width: ${({ size }) => size}px;
+  height: ${({ size }) => size}px;
 `;
 
 export default Avatar;

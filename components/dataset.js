@@ -20,30 +20,30 @@ const defaultDataset = {
   },
   redWine: {
     answers: [
-      { content: '香りが良くて軽いタイプ', nextId: 'contact' },
-      { content: '', nextId: 'contact' },
-      { content: '', nextId: 'contact' },
+      { content: '香りが良くて軽いタイプ', nextId: 'Chardonnay' },
+      { content: '', nextId: 'Chardonnay' },
+      { content: '', nextId: 'Chardonnay' },
       { content: '', nextId: '' },
     ],
     question: '赤ワインだね！まかせな！　タイプはどうしたい？',
   },
   whiteWine: {
     answers: [
-      { content: '問い合わせる', nextId: 'contact' },
+      { content: '問い合わせる', nextId: 'Chardonnay' },
       { content: '最初の質問に戻る', nextId: 'init' },
     ],
     question: '白ワインだね！　僕も好きだよ！　君はどんなタイプが良い？',
   },
   sparklingWine: {
     answers: [
-      { content: '問い合わせる', nextId: 'contact' },
+      { content: '問い合わせる', nextId: 'Chardonnay' },
       { content: '最初の質問に戻る', nextId: 'init' },
     ],
     question: '最高だね！どれだけでも飲みたいね！',
   },
   roseWine: {
     answers: [
-      { content: '問い合わせる', nextId: 'contact' },
+      { content: '問い合わせる', nextId: 'Chardonnay' },
       { content: '最初の質問に戻る', nextId: 'init' },
     ],
     question: 'おしゃれさんだね！ ロゼワインは見ているだけでウキウキしちゃうよ！',

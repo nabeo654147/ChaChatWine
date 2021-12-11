@@ -4,7 +4,10 @@ import AnswersList from '../molecules/AnswersList';
 import Chats from '../molecules/Chats';
 import defaultDataset from '../dataset';
 import styled from 'styled-components';
-import SuggestionModal from '../organisms/SuggestionModal';
+import SuggestionModal, { SuggestionData } from '../organisms/SuggestionModal';
+import { getDownloadURL, ref } from 'firebase/storage';
+import { db, storage } from '../../lib/firebase';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 
 type Dataset = {
   [currentId: string]: {
@@ -32,12 +35,40 @@ const ChatBot: VFC = () => {
   const [currentId, setCurrentId] = useState<string>('init'); // 現在の質問ID
   const [dataset, setDataset] = useState<Dataset>(defaultDataset); // 質問と回答のデータセット
   const [open, setOpen] = useState<boolean>(false); //モーダルの開閉を管理
+  const [photoURL, setPhotoURL] = useState<string>('/img/loading.jpeg');
+  const [items, setItems] = useState<SuggestionData[] | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // ワインの説明モーダルを開くCallback関数
-  const handleOpen = useCallback(() => {
-    setOpen(true);
-  }, [setOpen]);
+  const handleOpen = useCallback(
+    async (nextQuestionId) => {
+      setLoading(true);
+      try {
+        const storageRef = ref(storage, `images/suggestion/${nextQuestionId}.jpg`);
+        const url = await getDownloadURL(storageRef);
+        setPhotoURL(url);
+      } catch (error) {
+        console.log(error);
+        return Promise.reject(error);
+      }
+
+      try {
+        const q = query(collection(db, 'suggestionData'), where('wine', '==', `${nextQuestionId}`));
+        const snapShots = await getDocs(q);
+        const itemsData: SuggestionData[] = [];
+        snapShots.forEach((doc) => {
+          itemsData.push(doc.data() as SuggestionData);
+        });
+        setItems(itemsData);
+        setLoading(false);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+      return [setOpen(true), setLoading(false)];
+    },
+    [open],
+  );
 
   // ワイン説明モーダルを閉じるCallback関数
   const handleClose = useCallback(() => {
@@ -57,7 +88,7 @@ const ChatBot: VFC = () => {
   // 次の質問をチャットエリアに表示する関数
   const displayNextQuestion = (
     nextQuestionId: string,
-    nextDataset: { question: any; answers: React.SetStateAction<AnswersProps> },
+    nextDataset: { question: string; answers: React.SetStateAction<AnswersProps> },
   ) => {
     // 選択された回答と次の質問をチャットに追加
     addChats({
@@ -76,8 +107,8 @@ const ChatBot: VFC = () => {
     (selectedAnswer: string, nextQuestionId: string) => {
       switch (true) {
         // お問い合わせが選択された場合
-        case nextQuestionId === 'contact':
-          handleOpen();
+        case nextQuestionId === 'Chardonnay':
+          handleOpen(nextQuestionId);
           break;
 
         // リンクが選択された時
@@ -149,7 +180,13 @@ const ChatBot: VFC = () => {
           <AnswersList answers={answers} select={selectAnswer} />
         </>
         {/* )} */}
-        <SuggestionModal open={open} handleClose={handleClose} />
+        <SuggestionModal
+          open={open}
+          loading={loading}
+          photoURL={photoURL}
+          items={items}
+          handleClose={handleClose}
+        />
       </ChatBox>
     </Section>
   );
@@ -173,7 +210,7 @@ const ChatBox = styled.div`
   max-width: 432px;
   padding: 0 1rem;
   width: 100%;
-  overflow: scroll;
+  overflow-y: scroll;
   position: absolute;
   top: 50%;
   left: 50%;

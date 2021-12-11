@@ -54,7 +54,7 @@ export const Uploader: FC<uploadProps> = ({ src, myFiles, setMyFiles, setSrc }) 
           <div>
             {myFiles.map((file: File) => (
               <React.Fragment key={file.name}>
-                {src && <Image src={src} width={500} height={600} layout={'intrinsic'} />}
+                {src && <Image src={src} width={400} height={400} objectFit={'fill'} />}
               </React.Fragment>
             ))}
           </div>
@@ -71,9 +71,12 @@ const Outline = styled.div`
 `;
 
 const UploadBox = styled.div`
-  background-color: #c6dbff;
+  height: 20rem;
+  background-color: #ffd6c6;
   border: 2px solid #6b7280;
   border-radius: 5px;
+  display: flex;
+  align-items: center;
   p {
     padding: 1rem;
     text-align: center;

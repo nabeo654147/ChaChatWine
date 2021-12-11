@@ -1,14 +1,14 @@
 import { createContext, useState, useEffect, useContext } from 'react';
 
 import { auth } from '../lib/firebase';
-import { createUserWithEmailAndPassword, User, UserCredential } from '@firebase/auth';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, getAuth, User, UserCredential } from '@firebase/auth';
+import { signInWithEmailAndPassword, signInAnonymously } from 'firebase/auth';
 
 type AuthContextType = {
-  // currentUser: User | null;
   signUp: (email: string, password: string) => Promise<UserCredential>;
   login: (email: string, password: string) => Promise<UserCredential>;
   logout: () => Promise<void>;
+  isAnonymous?: boolean;
 };
 
 type Props = {
@@ -38,18 +38,24 @@ const AuthProvider = ({ children }: Props): JSX.Element => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const isAnonymous = getAuth().currentUser?.isAnonymous;
+
   useEffect(() => {
-    return auth.onAuthStateChanged((user: User | null) => {
-      setCurrentUser(user);
-      setIsLoading(false);
+    return auth.onAuthStateChanged(async (user: User | null) => {
+      if (!user) {
+        signInAnonymously(auth);
+      } else {
+        setCurrentUser(user);
+        setIsLoading(false);
+      }
     });
   }, []);
 
   const value: AuthContextType = {
-    // currentUser,
     signUp,
     login,
     logout,
+    isAnonymous,
   };
 
   return (

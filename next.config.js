@@ -5,6 +5,9 @@ module.exports = {
     // Enables the styled-components SWC transform
     styledComponents: true,
   },
+  images: {
+    domains: ['firebasestorage.googleapis.com'],
+  },
   env: {
     FIREBASE_KEY: process.env.FIREBASE_KEY,
     FIREBASE_DOMAIN: process.env.FIREBASE_DOMAIN,

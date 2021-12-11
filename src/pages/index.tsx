@@ -1,12 +1,13 @@
 import type { NextPage } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import React from 'react';
 import styled from 'styled-components';
 import { Layout } from '../../components/layout';
-import { getAuth } from '@firebase/auth';
+import { useAuth } from '../../lib/AuthContext';
 
 const Home: NextPage = () => {
-  const currentUser = getAuth().currentUser;
+  const { isAnonymous } = useAuth();
 
   return (
     <>
@@ -19,13 +20,12 @@ const Home: NextPage = () => {
           <AppTitle>ChaChatWine</AppTitle>
           <p>~あなたポッケに小さなソムリエ~</p>
         </TitleBox>
-
         <NavBox>
           <ul>
             <li>
               <Link href='/chatPage'>🍇おすすめのワインを聞く</Link>
             </li>
-            {currentUser ? (
+            {isAnonymous === false ? (
               <>
                 <li>
                   <Link href='/logFormPage'>🗒記録ページ</Link>
@@ -46,6 +46,10 @@ const Home: NextPage = () => {
             )}
           </ul>
         </NavBox>
+        <WineImage>
+          <Image src='/img/sommelier.png' height={250} width={200} />
+          <Image src='/img/test.png' height={200} width={250} />
+        </WineImage>
       </Layout>
     </>
   );
@@ -71,4 +75,9 @@ const TitleBox = styled.div`
   justify-content: space-evenly;
   flex-direction: column;
   align-items: center;
+`;
+
+const WineImage = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;

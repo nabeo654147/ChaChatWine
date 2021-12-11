@@ -7,11 +7,6 @@ import { getAuth } from '@firebase/auth';
 import { LogList } from '../LogList';
 import { Pentagon } from '../../organisms/PentagonGraph';
 
-type ModalProps = {
-  open?: boolean;
-  handleClose?: () => void;
-};
-
 export type LogItemProps = {
   uid: string;
   createAt: string;
@@ -75,53 +70,55 @@ const LogPageItems: VFC = () => {
   return (
     <>
       {items && <LogList lists={items} handleOpen={handleOpen} />}
-      {items &&
-        items.map((item) => {
-          return (
-            <React.Fragment key={item.createAt}>
-              <Overlay switchBtn={switchBtn} key={item.createAt}>
-                <Modal>
-                  <>
-                    <AvatarStyle>
+      <Overlay switchBtn={switchBtn}>
+        <Modal>
+          {items &&
+            items.map((item) => {
+              return (
+                <React.Fragment key={item.createAt}>
+                  <AvatarStyle>
+                    {item.photoURL ? (
                       <Avatar src={item.photoURL} size={300} />
-                    </AvatarStyle>
-                    <p>{item.name}</p>
-                    <Pentagon
-                      data={[
-                        { subject: '香り', value: item.aroma, fullMark: 5 },
-                        { subject: '甘味', value: item.sweetness, fullMark: 5 },
-                        { subject: '酸味', value: item.acidity, fullMark: 5 },
-                        { subject: '渋味', value: item.astringency, fullMark: 5 },
-                        { subject: '余韻', value: item.afterglow, fullMark: 5 },
-                      ]}
-                    />
-                    <p>{item.area}</p>
-                    <p>{item.vintage}年</p>
-                    <p>¥{item.price}</p>
-                    <p>{item.date}</p>
-                    <StarIcon>
-                      {item.favorability === '1star' ? (
-                        <span>★</span>
-                      ) : item.favorability === '2star' ? (
-                        <span>★★</span>
-                      ) : item.favorability === '3star' ? (
-                        <span>★★★</span>
-                      ) : item.favorability === '4star' ? (
-                        <span>★★★★</span>
-                      ) : (
-                        <span>★★★★★</span>
-                      )}
-                    </StarIcon>
-                    <p>{item.type}</p>
-                    <p>{item.aroma}</p>
-                    <div>{item.comment}</div>
-                    <button onClick={handleSwitch}>閉じる</button>
-                  </>
-                </Modal>
-              </Overlay>
-            </React.Fragment>
-          );
-        })}
+                    ) : (
+                      <Avatar src={'/img/wine-stone.jpg'} size={300} />
+                    )}
+                  </AvatarStyle>
+                  <p>{item.name}</p>
+                  <Pentagon
+                    data={[
+                      { subject: '香り', value: item.aroma, fullMark: 5 },
+                      { subject: '甘味', value: item.sweetness, fullMark: 5 },
+                      { subject: '酸味', value: item.acidity, fullMark: 5 },
+                      { subject: '渋味', value: item.astringency, fullMark: 5 },
+                      { subject: '余韻', value: item.afterglow, fullMark: 5 },
+                    ]}
+                  />
+                  <p>{item.area}</p>
+                  <p>{item.vintage}年</p>
+                  <p>¥{item.price}</p>
+                  <p>{item.date}</p>
+                  <StarIcon>
+                    {item.favorability === '1star' ? (
+                      <span>★</span>
+                    ) : item.favorability === '2star' ? (
+                      <span>★★</span>
+                    ) : item.favorability === '3star' ? (
+                      <span>★★★</span>
+                    ) : item.favorability === '4star' ? (
+                      <span>★★★★</span>
+                    ) : (
+                      <span>★★★★★</span>
+                    )}
+                  </StarIcon>
+                  <p>{item.type}</p>
+                  <p>{item.aroma}</p>
+                  <div>{item.comment}</div>
+                  <button onClick={handleSwitch}>閉じる</button>
+                </React.Fragment>
+              );
+            })}
+        </Modal>
+      </Overlay>
     </>
   );
 };
@@ -139,11 +136,12 @@ const Overlay = styled.div<{ switchBtn: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 5;
   visibility: ${(props) => (props.switchBtn === true ? 'unset' : 'hidden')};
 `;
 
 const Modal = styled.div`
-  z-index: 2;
+  max-width: 900px;
   width: 90%;
   padding: 1em;
   background: #fff;
