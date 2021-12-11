@@ -2,17 +2,17 @@ import React, { forwardRef, useState } from 'react';
 import styled from 'styled-components';
 
 type Props = {
-  name?: string;
-  type?: string;
-  placeholder?: string;
-  rangeTitle?: string;
-  step?: number;
-  min?: number;
-  max?: number;
-  value?: number;
+  name: string;
+  type: string;
+  placeholder: string;
+  rangeTitle: string;
+  step: number;
+  min: number;
+  max: number;
+  value: number;
 };
 
-export const Range = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
+export const Range = forwardRef<HTMLInputElement, Partial<Props>>((props: Partial<Props>, ref) => {
   const [value, setValue] = useState<number | string>(3);
 
   return (
@@ -38,14 +38,8 @@ export const Range = forwardRef<HTMLInputElement, Props>((props: Props, ref) => 
 const RangeWrap = styled.div`
   display: inline-flex;
   justify-content: space-between;
-  div {
-    /* width: 20rem; */
-    /* width: 100%; */
-    /* align-items: end; */
-  }
 `;
 
 const InputRange = styled.input`
-  /* width: 50%; */
-  width: 200px;
+  min-width: 200px;
 `;

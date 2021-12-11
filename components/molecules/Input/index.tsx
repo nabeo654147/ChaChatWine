@@ -7,6 +7,7 @@ type Props = {
   value?: string | number;
   min?: string;
   max?: string;
+  list?: string;
   placeholder?: string;
   inputFormTitle: string;
 };
@@ -22,6 +23,7 @@ export const Input = forwardRef<HTMLInputElement, Props>((props: Props, ref) => 
         value={props.value}
         min={props.min}
         max={props.max}
+        list={props.list}
         placeholder={props.placeholder}
       />
     </FormWrap>

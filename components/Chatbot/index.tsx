@@ -88,7 +88,7 @@ const ChatBot: VFC = () => {
   // 次の質問をチャットエリアに表示する関数
   const displayNextQuestion = (
     nextQuestionId: string,
-    nextDataset: { question: any; answers: React.SetStateAction<AnswersProps> },
+    nextDataset: { question: string; answers: React.SetStateAction<AnswersProps> },
   ) => {
     // 選択された回答と次の質問をチャットに追加
     addChats({

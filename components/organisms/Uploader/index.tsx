@@ -8,10 +8,9 @@ type uploadProps = {
   setSrc: Dispatch<SetStateAction<string>>;
   myFiles: File[];
   setMyFiles: Dispatch<SetStateAction<File[]>>;
-  setPhotoURL: Dispatch<SetStateAction<File[]>>;
 };
 
-export const Uploader: FC<uploadProps> = ({ src, myFiles, setMyFiles, setSrc, setPhotoURL }) => {
+export const Uploader: FC<uploadProps> = ({ src, myFiles, setMyFiles, setSrc }) => {
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     if (!acceptedFiles[0]) return;
 
@@ -37,7 +36,6 @@ export const Uploader: FC<uploadProps> = ({ src, myFiles, setMyFiles, setSrc, se
     const file = files[0];
     if (files === null || file === null) return;
 
-    setPhotoURL(file);
     let reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
@@ -56,7 +54,7 @@ export const Uploader: FC<uploadProps> = ({ src, myFiles, setMyFiles, setSrc, se
           <div>
             {myFiles.map((file: File) => (
               <React.Fragment key={file.name}>
-                {src && <Image src={src} width={500} height={600} layout={'intrinsic'} />}
+                {src && <Image src={src} width={400} height={400} objectFit={'fill'} />}
               </React.Fragment>
             ))}
           </div>

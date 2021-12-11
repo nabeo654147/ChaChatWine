@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useAuth } from '../lib/AuthContext';
 import { getAuth } from '@firebase/auth';
+import { Button } from './atoms/Button';
 import styled from 'styled-components';
 
 type Props = {
@@ -30,7 +31,7 @@ export const Layout: VFC<Props> = ({
   };
 
   return (
-    <>
+    <Absolute>
       <Head>
         <title>{pageTitel}</title>
         <meta name='description' content={description || 'ホームページ概要'} />
@@ -46,12 +47,12 @@ export const Layout: VFC<Props> = ({
         )}
         <HeaderNav>
           <Link href='/'>Home</Link>
-          {!isAnonymous && <button onClick={handleLogout}>ログアウト</button>}
+          {!isAnonymous && <Button text={'ログアウト'} onClick={handleLogout} />}
         </HeaderNav>
       </header>
       <main>{children}</main>
       <footer>&copy; ChaChatWine</footer>
-    </>
+    </Absolute>
   );
 };
 
@@ -64,4 +65,8 @@ const HeaderNav = styled.nav`
 
 const SubTitle = styled.h3`
   color: #ffbe92;
+`;
+
+const Absolute = styled.div`
+  position: absolute;
 `;
