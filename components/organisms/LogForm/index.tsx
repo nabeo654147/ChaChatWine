@@ -7,7 +7,7 @@ import { Uploader } from '../../../components/organisms/Uploader';
 import { Selecter } from '../../../components/molecules/Selecter';
 import { Button } from '../../../components/atoms/Button';
 import styled from 'styled-components';
-import { addDoc, collection, doc, Timestamp } from '@firebase/firestore';
+import { addDoc, collection, Timestamp } from '@firebase/firestore';
 import { db, storage } from '../../../lib/firebase';
 import { getAuth } from '@firebase/auth';
 import { ref, uploadBytesResumable, getDownloadURL, TaskState } from 'firebase/storage';
@@ -37,35 +37,11 @@ const LogForm: VFC = () => {
   const afterglowRef = useRef<HTMLInputElement>(null);
   const commentRef = useRef<HTMLTextAreaElement>(null);
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      await addDoc(collection(db, 'logData'), {
-        // recommendation: values.recommendation,
-        uid: currentUser?.uid,
-        createAt: Timestamp.now().toDate(),
-        name: nameRef.current?.value,
-        area: areaRef.current?.value,
-        vintage: Number(vintageRef.current?.value),
-        price: Number(priceRef.current?.value),
-        date: dateRef.current?.value,
-        favorability: favorite,
-        type: typeRef.current?.value,
-        aroma: Number(aromaRef.current?.value),
-        sweetness: Number(sweetnessRef.current?.value),
-        acidity: Number(acidityRef.current?.value),
-        astringency: Number(astringencyRef.current?.value),
-        afterglow: Number(afterglowRef.current?.value),
-        comment: commentRef.current?.value,
-      });
-    } catch (error) {
-      console.log(error);
-      return Promise.reject(error);
-    }
-
-    try {
-      const storageRef = ref(storage, `imagaes/logs/${currentUser?.uid}/${myFiles[0].name}`);
+      const storageRef = ref(storage, `images/logs/${currentUser?.uid}/${myFiles[0].name}`);
       const uploadTask = uploadBytesResumable(storageRef, myFiles[0]);
 
       uploadTask.on(
@@ -99,6 +75,30 @@ const LogForm: VFC = () => {
           //成功した時
           try {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl: string) => {
+              try {
+                addDoc(collection(db, 'logData'), {
+                  // recommendation: values.recommendation,
+                  uid: currentUser?.uid,
+                  createAt: Timestamp.now().toDate(),
+                  name: nameRef.current?.value,
+                  area: areaRef.current?.value,
+                  vintage: Number(vintageRef.current?.value),
+                  price: Number(priceRef.current?.value),
+                  date: dateRef.current?.value,
+                  favorability: favorite,
+                  type: typeRef.current?.value,
+                  photoURL: downloadUrl,
+                  aroma: Number(aromaRef.current?.value),
+                  sweetness: Number(sweetnessRef.current?.value),
+                  acidity: Number(acidityRef.current?.value),
+                  astringency: Number(astringencyRef.current?.value),
+                  afterglow: Number(afterglowRef.current?.value),
+                  comment: commentRef.current?.value,
+                });
+              } catch (error) {
+                console.log(error);
+                return Promise.reject(error);
+              }
               console.log(`ダウンロードしたURL ${downloadUrl}`);
             });
           } catch (error: any) {
@@ -135,14 +135,14 @@ const LogForm: VFC = () => {
           ref={nameRef}
           name={'name'}
           type={'text'}
-          placeholder={'ワイン名'}
+          placeholder={'ちゃちゃっとワイン'}
           inputFormTitle={'ワイン名'}
         />
         <Input
           ref={areaRef}
           name={'area'}
           type={'text'}
-          placeholder={'原産国/産地'}
+          placeholder={'コルク王国/ミュズレ地方'}
           inputFormTitle={'原産国/産地名'}
         />
         <Input
@@ -151,23 +151,21 @@ const LogForm: VFC = () => {
           type={'number'}
           min={'1900'}
           max={'2030'}
-          placeholder={'ヴィンテージ'}
-          inputFormTitle={'ヴィンテージ'}
+          placeholder={'1995'}
+          list={'vintage'}
+          inputFormTitle={'ヴィンテージ(収穫年)'}
         />
+        <datalist id='vintage'>
+          <option value='2000' />
+        </datalist>
         <Input
           ref={priceRef}
           name={'price'}
           type={'number'}
-          placeholder={'価格'}
+          placeholder={'10000'}
           inputFormTitle={'価格'}
         />
-        <Input
-          ref={dateRef}
-          name={'date'}
-          type={'date'}
-          placeholder={'日付'}
-          inputFormTitle={'日付'}
-        />
+        <Input ref={dateRef} name={'date'} type={'date'} inputFormTitle={'日付'} />
         <StarRating
           favorite={favorite}
           onChange={handleChange}
@@ -191,8 +189,11 @@ const LogForm: VFC = () => {
         </UploaderBox>
         <Textarea
           ref={commentRef}
-          textareaTitle={'コメント欄'}
-          placeholder={'コメント欄'}
+          textareaTitle={'感じたこと'}
+          placeholder={
+            '今日は、コルク坊やと話をしている中で飲んでみたいワインが出てきたので、そのワインを飲んでみることに！' +
+            `\nとても香りの良いワインで、マスカットのようの香りがした。\nこの香りのシャンプーがあったら10個はストックするだろう！\n今度は同じ地域の違う品種のワインを飲んでみたい！！`
+          }
           rows={5}
           cols={50}
         />
@@ -205,8 +206,10 @@ const LogForm: VFC = () => {
 export default LogForm;
 
 const LogBox = styled.div`
+  max-width: 1000px;
+  margin: auto;
   border: 2px solid #ffa958;
-  padding: 1rem;
+  padding: 3rem;
   p,
   span,
   label {
@@ -215,7 +218,14 @@ const LogBox = styled.div`
 `;
 
 const UploaderBox = styled.div`
+  > div {
+    min-height: 20rem;
+    min-width: 17rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
   display: flex;
-  text-align: end;
   align-items: center;
+  justify-content: space-between;
 `;
