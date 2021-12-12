@@ -29,7 +29,7 @@ export const Button: FC<Props> = ({
   size = 'default',
   shape = 'default',
   block = false,
-  // loading = false,
+  loading = false,
   onClick,
 }: Props) => {
   return (
@@ -38,7 +38,7 @@ export const Button: FC<Props> = ({
       size={size}
       shape={shape}
       block={block}
-      // loading={loading}
+      loading={loading}
       style={style}
       disabled={disable}
       onClick={onClick}
@@ -53,7 +53,7 @@ export const Button: FC<Props> = ({
 const ButtonStyle = styled.button<Props>`
   //デフォルトのスタイル
   background-color: transparent;
-  border: none;
+  /* border: none; */
   cursor: pointer;
   outline: none;
   appearance: none;

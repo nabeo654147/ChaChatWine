@@ -1,21 +1,22 @@
 import React, { VFC } from 'react';
 import styled from 'styled-components';
 import Avatar from '../../atoms/Avatar';
+import { Button } from '../../atoms/Button';
 
 type ModalProps = {
   open: boolean;
   loading: boolean;
-  photoURL: string;
   items: SuggestionData[] | null;
-  handleClose?: () => void;
+  handleClose: () => void;
 };
 
 export type SuggestionData = {
   wine: string;
+  photoURL: string;
   description: string;
 };
 
-const SuggestionModal: VFC<ModalProps> = ({ open, loading, items, photoURL, handleClose }) => {
+const SuggestionModal: VFC<ModalProps> = ({ open, loading, items, handleClose }) => {
   return (
     <Overlay open={open}>
       <Modal>
@@ -28,12 +29,17 @@ const SuggestionModal: VFC<ModalProps> = ({ open, loading, items, photoURL, hand
               items.map((item, i) => {
                 return (
                   <React.Fragment key={i}>
-                    <Avatar src={photoURL} alt={'wineImage'} size={300} />
+                    <Avatar src={item.photoURL} alt={'wineImage'} size={300} />
                     <p>{item.description}</p>
                   </React.Fragment>
                 );
               })}
-            <button onClick={handleClose}>閉じる</button>
+            <CloseButton
+              onClick={handleClose}
+              text={'閉じる'}
+              shape={'round'}
+              style={{ background: '#919191' }}
+            />
             {/* <a
               // href={'https://www.aeondewine.com/shop/category/category.aspx?category=a106'}
               href={
@@ -72,4 +78,8 @@ const Modal = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const CloseButton = styled(Button)`
+  /* background: #c4e216; */
 `;
