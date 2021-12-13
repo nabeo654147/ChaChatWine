@@ -8,6 +8,7 @@ type Props = {
   min?: string;
   max?: string;
   list?: string;
+  autocompleate?: string;
   placeholder?: string;
   inputFormTitle: string;
 };
@@ -24,6 +25,7 @@ export const Input = forwardRef<HTMLInputElement, Props>((props: Props, ref) => 
         min={props.min}
         max={props.max}
         list={props.list}
+        autoComplete={props.autocompleate}
         placeholder={props.placeholder}
       />
     </FormWrap>
@@ -35,7 +37,7 @@ const FormWrap = styled.div`
   display: flex;
   flex-direction: column;
   > input {
-    border-radius: 0.3rem;
+    border-radius: 8px;
     font-size: 1.5rem;
   }
 `;
