@@ -56,7 +56,6 @@ const LoginPage: NextPage = () => {
           shape={'round'}
           onClick={handleLogin}
           disabled={loading || isAnonymous === false || undefined}
-          style={{ border: 'none', background: '#fd9456' }}
         />
         <Link href='/signUpPage'>
           <a>新規登録</a>
