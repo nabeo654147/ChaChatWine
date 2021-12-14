@@ -6,6 +6,8 @@ import { db } from '../../../lib/firebase';
 import { getAuth } from '@firebase/auth';
 import { LogList } from '../LogList';
 import { Pentagon } from '../../organisms/PentagonGraph';
+import { Button } from '../../atoms/Button';
+import { tab } from '../../../lib/media';
 
 export type LogItemProps = {
   uid: string;
@@ -28,20 +30,20 @@ export type LogItemProps = {
 
 const LogPageItems: VFC = () => {
   const currentUser = getAuth().currentUser;
-  const [switchBtn, setSwitchBtn] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
   const [items, setItems] = useState<LogItemProps[] | null>(null);
   const [initItems, setInitItems] = useState<LogItemProps[] | null>(null);
 
-  const handleSwitch = () => {
+  const handleClose = () => {
     setItems(initItems);
-    setSwitchBtn(!switchBtn);
+    setOpen(false);
   };
 
   const handleOpen = (id: string) => {
     if (items) {
       const filter = items.filter((item) => item.createAt === id);
       setItems(filter);
-      setSwitchBtn(!switchBtn);
+      setOpen(true);
     }
   };
 
@@ -70,7 +72,7 @@ const LogPageItems: VFC = () => {
   return (
     <>
       {items && <LogList lists={items} handleOpen={handleOpen} />}
-      <Overlay switchBtn={switchBtn}>
+      <Overlay open={open}>
         <Modal>
           {items &&
             items.map((item) => {
@@ -80,7 +82,7 @@ const LogPageItems: VFC = () => {
                     {item.photoURL ? (
                       <Avatar src={item.photoURL} size={300} />
                     ) : (
-                      <Avatar src={'/img/wine-stone.jpg'} size={300} />
+                      <Avatar src={'/img/loading.jpeg'} size={300} />
                     )}
                   </AvatarStyle>
                   <p>{item.name}</p>
@@ -93,10 +95,7 @@ const LogPageItems: VFC = () => {
                       { subject: '余韻', value: item.afterglow, fullMark: 5 },
                     ]}
                   />
-                  <p>{item.area}</p>
-                  <p>{item.vintage}年</p>
-                  <p>¥{item.price}</p>
-                  <p>{item.date}</p>
+                  <p>{item.type}ワイン</p>
                   <StarIcon>
                     {item.favorability === '1star' ? (
                       <span>★</span>
@@ -110,10 +109,12 @@ const LogPageItems: VFC = () => {
                       <span>★★★★★</span>
                     )}
                   </StarIcon>
-                  <p>{item.type}</p>
-                  <p>{item.aroma}</p>
-                  <div>{item.comment}</div>
-                  <button onClick={handleSwitch}>閉じる</button>
+                  <p>{item.area}</p>
+                  <p>{item.vintage}年</p>
+                  <p>¥{item.price}</p>
+                  <p>{item.date}</p>
+                  <Comment>{item.comment}</Comment>
+                  <Button text={'閉じる'} size={'large'} shape={'round'} onClick={handleClose} />
                 </React.Fragment>
               );
             })}
@@ -122,9 +123,10 @@ const LogPageItems: VFC = () => {
     </>
   );
 };
+
 export default LogPageItems;
 
-const Overlay = styled.div<{ switchBtn: boolean }>`
+const Overlay = styled.div<{ open: boolean }>`
   overflow-y: scroll;
   position: fixed;
   top: 0;
@@ -137,22 +139,34 @@ const Overlay = styled.div<{ switchBtn: boolean }>`
   align-items: center;
   justify-content: center;
   z-index: 5;
-  visibility: ${(props) => (props.switchBtn === true ? 'unset' : 'hidden')};
+  visibility: ${(props) => (props.open === true ? 'unset' : 'hidden')};
 `;
 
 const Modal = styled.div`
-  max-width: 900px;
   width: 90%;
+  max-width: 900px;
   padding: 1em;
-  background: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: #ffe6a0;
+  box-shadow: inset 0 0 30px #64625a;
+
+  p {
+    font-size: 1.3rem;
+    color: #603913;
+  }
+
+  Button {
+    border: none;
+    background: #b9a878;
+    margin-top: 1rem;
+  }
 `;
 
 const StarIcon = styled.span`
   font-size: 2rem;
-  color: #fdf900;
+  color: #ffdc2f;
 `;
 
 const AvatarStyle = styled.div`
@@ -161,8 +175,16 @@ const AvatarStyle = styled.div`
     inset: unset !important;
     height: 18rem !important;
     width: 18rem !important;
+    background: #fffef0;
   }
-  span {
-    margin-top: 2rem !important;
+  span > img {
+    margin-top: 5rem !important;
   }
+`;
+
+const Comment = styled.div`
+  max-width: 650px;
+  ${tab`
+      max-width: 400px;
+  `}
 `;
