@@ -6,11 +6,12 @@ import { Range } from '../../../components/molecules/Range';
 import { Uploader } from '../../../components/organisms/Uploader';
 import { Selecter } from '../../../components/molecules/Selecter';
 import { Button } from '../../../components/atoms/Button';
-import styled from 'styled-components';
-import { addDoc, collection, Timestamp } from '@firebase/firestore';
-import { db, storage } from '../../../lib/firebase';
 import { getAuth } from '@firebase/auth';
+import { addDoc, collection, Timestamp } from '@firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL, TaskState } from 'firebase/storage';
+import { db, storage } from '../../../lib/firebase';
+import { minitab } from '../../../lib/media';
+import styled from 'styled-components';
 
 type firebaseOnLoadProp = {
   bytesTransferred: number;
@@ -38,7 +39,7 @@ const LogForm: VFC = () => {
   const commentRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    // e.preventDefault();
 
     try {
       const storageRef = ref(storage, `images/logs/${currentUser?.uid}/${myFiles[0].name}`);
@@ -77,7 +78,6 @@ const LogForm: VFC = () => {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl: string) => {
               try {
                 addDoc(collection(db, 'logData'), {
-                  // recommendation: values.recommendation,
                   uid: currentUser?.uid,
                   createAt: Timestamp.now().toDate(),
                   name: nameRef.current?.value,
@@ -162,6 +162,7 @@ const LogForm: VFC = () => {
           ref={priceRef}
           name={'price'}
           type={'number'}
+          min={'0'}
           placeholder={'10000'}
           inputFormTitle={'価格'}
         />
@@ -189,15 +190,17 @@ const LogForm: VFC = () => {
         </UploaderBox>
         <Textarea
           ref={commentRef}
+          rows={5}
+          cols={50}
           textareaTitle={'感じたこと'}
           placeholder={
             '今日は、コルク坊やと話をしている中で飲んでみたいワインが出てきたので、そのワインを飲んでみることに！' +
             `\nとても香りの良いワインで、マスカットのようの香りがした。\nこの香りのシャンプーがあったら10個はストックするだろう！\n今度は同じ地域の違う品種のワインを飲んでみたい！！`
           }
-          rows={5}
-          cols={50}
         />
-        <Button type={'submit'} text={'送信'} />
+        <ButtonPosition>
+          <Button size={'large'} shape={'round'} type={'submit'} text={'送信'} />
+        </ButtonPosition>
       </form>
     </LogBox>
   );
@@ -208,12 +211,22 @@ export default LogForm;
 const LogBox = styled.div`
   max-width: 1000px;
   margin: auto;
-  border: 2px solid #ffa958;
   padding: 3rem;
+  background: #ffe291;
+  box-shadow: inset 0 0 30px #64625a;
+  Input {
+    background: #feffec;
+  }
   p,
   span,
   label {
     font-size: 1.6rem;
+  }
+  div {
+    margin-bottom: 0.8rem;
+  }
+  Button {
+    border: none;
   }
 `;
 
@@ -228,4 +241,12 @@ const UploaderBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  ${minitab`
+          flex-direction: column;
+  `}
+`;
+
+const ButtonPosition = styled.div`
+  display: flex;
+  justify-content: center;
 `;

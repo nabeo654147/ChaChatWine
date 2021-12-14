@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import styled, { css } from 'styled-components';
+import { sp } from '../../../lib/media';
 
 type Props = {
   ratingTitle?: string;
@@ -39,6 +40,9 @@ export const StarRating: FC<Props> = ({ ratingTitle, starIds, favorite, onChange
 const RatingWrap = styled.div`
   display: flex;
   justify-content: space-between;
+  ${sp`
+    flex-direction: column;
+  `}
 `;
 
 const HiddenStyle = css`

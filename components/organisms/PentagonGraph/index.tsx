@@ -13,7 +13,7 @@ type Props = {
 export const Pentagon: VFC<Props> = ({ data }) => {
   return (
     <Wrap>
-      <RadarChart cx={175} cy={175} outerRadius={140} width={350} height={300} data={data}>
+      <RadarChart cx={175} cy={175} outerRadius={130} width={350} height={300} data={data}>
         <PolarGrid />
         <PolarAngleAxis dataKey='subject' />
         <PolarRadiusAxis domain={[0, 5]} angle={18} />

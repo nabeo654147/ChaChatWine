@@ -9,6 +9,15 @@ export const sp = (
   }
 `;
 
+export const minitab = (
+  first: CSSObject | TemplateStringsArray,
+  ...interpolations: SimpleInterpolation[]
+): FlattenSimpleInterpolation => css`
+  @media (max-width: 680px) {
+    ${css(first, ...interpolations)}
+  }
+`;
+
 export const tab = (
   first: CSSObject | TemplateStringsArray,
   ...interpolations: SimpleInterpolation[]
