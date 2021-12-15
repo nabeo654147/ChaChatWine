@@ -1,5 +1,6 @@
 import React, { forwardRef } from 'react';
 import styled from 'styled-components';
+import { sp } from '../../../lib/media';
 
 type Props = {
   name?: string;
@@ -28,6 +29,9 @@ export const Selecter = forwardRef<HTMLSelectElement, Props>((props: Props, ref)
 const SelecterWrap = styled.div`
   display: flex;
   justify-content: space-between;
+  ${sp`
+    flex-direction: column;
+  `}
 `;
 
 const Select = styled.select`

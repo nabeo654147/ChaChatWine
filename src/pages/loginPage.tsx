@@ -1,13 +1,13 @@
 import type { NextPage } from 'next';
 import { useRef, useState } from 'react';
 import Link from 'next/link';
-import styled from 'styled-components';
 
 import { Layout } from '../../components/layout';
 import { Input } from '../../components/molecules/Input';
 import { useAuth } from '../../lib/AuthContext';
 import { useRequireLogin } from '../../utils/hooks/useRequireLogin';
-import { getAuth } from '@firebase/auth';
+import { FormBox } from './signUpPage';
+import { Button } from '../../components/atoms/Button';
 
 const LoginPage: NextPage = () => {
   const { isAnonymous, login } = useAuth();
@@ -32,60 +32,37 @@ const LoginPage: NextPage = () => {
 
   return (
     <Layout title='Login Page' description='ログインページ'>
-      <FormWrap>
-        <FormBox>
-          <Input
-            ref={emailRef}
-            name={'email'}
-            type={'email'}
-            placeholder={'Email'}
-            inputFormTitle={'Email'}
-          />
-          <Input
-            ref={passwordRef}
-            name={'password'}
-            type={'password'}
-            placeholder={'Password'}
-            inputFormTitle={'Password'}
-          />
-          <LoginButton
-            onClick={handleLogin}
-            disabled={loading || isAnonymous === false || undefined}
-            type='submit'
-          >
-            ログイン
-          </LoginButton>
-          <Link href='/signUpPage'>
-            <a>新規登録</a>
-          </Link>
-        </FormBox>
-      </FormWrap>
+      <FormBox>
+        <Input
+          ref={emailRef}
+          name={'email'}
+          type={'email'}
+          autocompleate={'username'}
+          placeholder={'Email'}
+          inputFormTitle={'Email'}
+        />
+        <Input
+          ref={passwordRef}
+          name={'password'}
+          type={'password'}
+          autocompleate={'current-password'}
+          placeholder={'Password'}
+          inputFormTitle={'Password'}
+        />
+        <Button
+          text={'ログイン'}
+          type={'submit'}
+          size={'large'}
+          shape={'round'}
+          onClick={handleLogin}
+          disabled={loading || isAnonymous === false || undefined}
+        />
+        <Link href='/signUpPage'>
+          <a>新規登録</a>
+        </Link>
+      </FormBox>
     </Layout>
   );
 };
 
 export default LoginPage;
-
-const FormBox = styled.form`
-  height: 50vh;
-  width: 70vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  border: 2px solid #000000;
-  margin: auto;
-  background: #ff6f5c9f;
-`;
-
-const LoginButton = styled.button`
-  border-radius: 40%;
-  font-size: 2rem;
-`;
-
-const FormWrap = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 3rem 0;
-`;

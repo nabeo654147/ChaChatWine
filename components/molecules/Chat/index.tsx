@@ -11,7 +11,7 @@ const Chat: VFC<ChatProps> = ({ type, text }) => {
   const isQuestion: boolean = type === 'question';
 
   return (
-    <ChatRow type={type} text={text}>
+    <ChatRow type={type}>
       <div>
         {isQuestion ? (
           <Avatar src={'/img/corksan.jpeg'} size={50} />
@@ -26,7 +26,7 @@ const Chat: VFC<ChatProps> = ({ type, text }) => {
 
 export default Chat;
 
-const ChatRow = styled.div<ChatProps>`
+const ChatRow = styled.div<{ type: 'question' | 'answers' }>`
   display: flex;
   padding-right: 0 !important;
 
@@ -46,14 +46,11 @@ const ChatRow = styled.div<ChatProps>`
 `;
 
 const ChatBubble = styled.div`
-  background: #41b6e6;
-  border-radius: 4px;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 500;
+  background: #f2ffebed;
+  border-radius: 8px;
+  color: #007e67;
+  font-weight: bolder;
   padding: 0.5rem;
-  /* margin-right: 1rem; */
   margin: 0.2em 0;
   max-width: 80%;
-  width: auto;
 `;

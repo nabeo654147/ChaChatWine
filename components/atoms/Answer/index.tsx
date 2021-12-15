@@ -21,12 +21,14 @@ export default Answer;
 
 const AnswerButton = styled.button`
   width: 90%;
-  background-color: #fa4545;
+  color: #7e7e7e;
+  background-color: #f0f150f2;
   margin-bottom: 0.2em;
-  font-size: 1em;
-  border-radius: 5px;
+  font-size: 1.2em;
+  font-weight: bolder;
+  border-radius: 10px;
 
   :hover {
-    opacity: 0.8;
+    background-color: #f2ff38;
   }
 `;

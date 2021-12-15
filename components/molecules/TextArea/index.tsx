@@ -30,4 +30,7 @@ const FormWrap = styled.div`
     width: 100%;
     border-radius: 0.3rem;
   }
+  p {
+    margin-bottom: 0;
+  }
 `;

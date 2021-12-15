@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 type Props = {
   text?: string;
   style?: CSSProperties;
-  disable?: boolean;
+  disabled?: boolean;
   icon?: React.ReactNode;
   type?: 'button' | 'submit' | 'reset';
   size?: 'small' | 'default' | 'large';
@@ -23,7 +23,7 @@ type Props = {
 export const Button: FC<Props> = ({
   text,
   style,
-  disable,
+  disabled,
   icon,
   type = 'button',
   size = 'default',
@@ -40,7 +40,7 @@ export const Button: FC<Props> = ({
       block={block}
       // loading={loading}
       style={style}
-      disabled={disable}
+      disabled={disabled}
       onClick={onClick}
     >
       {icon ? <IconStyle>{icon}</IconStyle> : null}
@@ -53,7 +53,7 @@ export const Button: FC<Props> = ({
 const ButtonStyle = styled.button<Props>`
   //デフォルトのスタイル
   background-color: transparent;
-  border: none;
+  /* border: none; */
   cursor: pointer;
   outline: none;
   appearance: none;

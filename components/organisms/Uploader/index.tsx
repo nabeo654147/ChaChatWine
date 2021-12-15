@@ -46,7 +46,7 @@ export const Uploader: FC<uploadProps> = ({ src, myFiles, setMyFiles, setSrc }) 
   return (
     <Outline>
       <UploadBox {...getRootProps()}>
-        {/* この中をタップすれば画像を選択できる */}
+        {/* この中をタップすると画像を選択できる */}
         <input {...getInputProps()} />
         {myFiles.length === 0 ? (
           <p>画像を選択またはドラッグ＆ドロップできます</p>
@@ -54,7 +54,7 @@ export const Uploader: FC<uploadProps> = ({ src, myFiles, setMyFiles, setSrc }) 
           <div>
             {myFiles.map((file: File) => (
               <React.Fragment key={file.name}>
-                {src && <Image src={src} width={400} height={400} objectFit={'fill'} />}
+                {src && <Image src={src} width={300} height={300} objectFit={'cover'} />}
               </React.Fragment>
             ))}
           </div>
@@ -66,19 +66,20 @@ export const Uploader: FC<uploadProps> = ({ src, myFiles, setMyFiles, setSrc }) 
 
 const Outline = styled.div`
   padding: 0.5rem 1rem;
-  display: flex;
-  flex-direction: column;
 `;
 
 const UploadBox = styled.div`
-  height: 20rem;
-  background-color: #ffd6c6;
+  min-height: 18rem;
+  background-color: #f9ffeb;
   border: 2px solid #6b7280;
-  border-radius: 5px;
   display: flex;
   align-items: center;
   p {
     padding: 1rem;
     text-align: center;
+  }
+  div {
+    margin-bottom: 0 !important;
+    max-height: 300px;
   }
 `;

@@ -30,11 +30,14 @@ const Ul = styled.ul`
     cursor: pointer;
   }
   li {
+    font-family: cursive;
+    font-weight: 600;
     position: relative;
     padding: 0.5em 0.5em 0.5em 0.5em;
     line-height: 1.5;
     background: #dbebf8;
     color: #505050;
     border-radius: 15px 0px 0px 15px;
+    z-index: 1;
   }
 `;

@@ -26,5 +26,6 @@ const AnswersBox = styled.div`
   display: flex;
   flex-flow: column;
   justify-content: flex-end;
+  align-items: center;
   height: 192px;
 `;

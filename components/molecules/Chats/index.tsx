@@ -1,5 +1,4 @@
 import React, { VFC } from 'react';
-import styled from 'styled-components';
 import Chat from '../Chat';
 
 type ChatsProps = {
@@ -11,16 +10,12 @@ type ChatsProps = {
 
 const Chats: VFC<ChatsProps> = ({ chats }) => {
   return (
-    <ChatList>
+    <li>
       {chats.map((chat, index) => {
         return <Chat text={chat.text} type={chat.type} key={index} />;
       })}
-    </ChatList>
+    </li>
   );
 };
 
 export default Chats;
-
-const ChatList = styled.li`
-  list-style: none;
-`;
