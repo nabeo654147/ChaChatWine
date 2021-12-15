@@ -1,4 +1,4 @@
-import React, { useRef, useState, VFC } from 'react';
+import React, { useEffect, useRef, useState, VFC } from 'react';
 import { Input } from '../../../components/molecules/Input';
 import { StarRating } from '../../../components/molecules/StarRating';
 import { Textarea } from '../../../components/molecules/TextArea';
@@ -6,12 +6,18 @@ import { Range } from '../../../components/molecules/Range';
 import { Uploader } from '../../../components/organisms/Uploader';
 import { Selecter } from '../../../components/molecules/Selecter';
 import { Button } from '../../../components/atoms/Button';
-import { getAuth } from '@firebase/auth';
 import { addDoc, collection, Timestamp } from '@firebase/firestore';
-import { ref, uploadBytesResumable, getDownloadURL, TaskState } from 'firebase/storage';
+import {
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  TaskState,
+  StorageError,
+} from 'firebase/storage';
 import { db, storage } from '../../../lib/firebase';
 import { minitab } from '../../../lib/media';
 import styled from 'styled-components';
+import { useAuth } from '../../../lib/AuthContext';
 
 type firebaseOnLoadProp = {
   bytesTransferred: number;
@@ -20,10 +26,11 @@ type firebaseOnLoadProp = {
 };
 
 const LogForm: VFC = () => {
-  const currentUser = getAuth().currentUser;
+  const { currentUser } = useAuth();
   const [favorite, setFavorite] = useState<string>('3star');
   const [myFiles, setMyFiles] = useState<File[]>([]);
   const [src, setSrc] = useState<string>('');
+  const [photoURL, setPhotoURL] = useState<string>('');
 
   const nameRef = useRef<HTMLInputElement>(null);
   const areaRef = useRef<HTMLInputElement>(null);
@@ -39,88 +46,100 @@ const LogForm: VFC = () => {
   const commentRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
-    // e.preventDefault();
+    e.preventDefault();
 
-    try {
-      const storageRef = ref(storage, `images/logs/${currentUser?.uid}/${myFiles[0].name}`);
-      const uploadTask = uploadBytesResumable(storageRef, myFiles[0]);
+    const logFormItems = {
+      uid: currentUser?.uid,
+      createAt: Timestamp.now().toDate(),
+      name: nameRef.current?.value,
+      area: areaRef.current?.value,
+      vintage: Number(vintageRef.current?.value),
+      price: Number(priceRef.current?.value),
+      date: dateRef.current?.value,
+      favorability: favorite,
+      type: typeRef.current?.value,
+      photoURL: photoURL,
+      aroma: Number(aromaRef.current?.value),
+      sweetness: Number(sweetnessRef.current?.value),
+      acidity: Number(acidityRef.current?.value),
+      astringency: Number(astringencyRef.current?.value),
+      afterglow: Number(afterglowRef.current?.value),
+      comment: commentRef.current?.value,
+    };
 
-      uploadTask.on(
-        'state_changed',
-        (snapshot: firebaseOnLoadProp) => {
-          const progress: number = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log(`Upload is ${progress}% done`);
-          switch (snapshot.state) {
-            case 'paused':
-              console.log('Upload is paused');
-            case 'running':
-              console.log('Upload is running');
-              break;
-          }
-        },
-        (error: any) => {
-          //失敗した場合
-          switch (error.code) {
-            case 'storage/unauthorized':
-              console.error('権限がありません');
-              break;
-            case 'storage/canceled':
-              console.error('アップロードがキャンセルされました');
-              break;
-            case 'storage/unknown':
-              console.error('予期せぬエラーが発生しました');
-              break;
-          }
-        },
-        () => {
-          //成功した時
-          try {
-            getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl: string) => {
-              try {
-                addDoc(collection(db, 'logData'), {
-                  uid: currentUser?.uid,
-                  createAt: Timestamp.now().toDate(),
-                  name: nameRef.current?.value,
-                  area: areaRef.current?.value,
-                  vintage: Number(vintageRef.current?.value),
-                  price: Number(priceRef.current?.value),
-                  date: dateRef.current?.value,
-                  favorability: favorite,
-                  type: typeRef.current?.value,
-                  photoURL: downloadUrl,
-                  aroma: Number(aromaRef.current?.value),
-                  sweetness: Number(sweetnessRef.current?.value),
-                  acidity: Number(acidityRef.current?.value),
-                  astringency: Number(astringencyRef.current?.value),
-                  afterglow: Number(afterglowRef.current?.value),
-                  comment: commentRef.current?.value,
-                });
-              } catch (error) {
-                console.log(error);
-                return Promise.reject(error);
-              }
-              console.log(`ダウンロードしたURL ${downloadUrl}`);
-            });
-          } catch (error: any) {
-            switch (error.code) {
-              case 'storage/object-not-found':
-                console.log('ファイルが存在しませんでした');
-                break;
-              case 'storage/unauthorized':
-                console.log('権限がありません');
-                break;
-              case 'storage/canceled':
-                console.log('キャンセルされました');
-                break;
-              case 'storage/unknown':
-                console.log('予期せぬエラーが生じました');
+    if (myFiles[0] === undefined) {
+      try {
+        addDoc(collection(db, 'logData'), { ...logFormItems });
+      } catch (error) {
+        console.log(error);
+        return Promise.reject(error);
+      }
+    } else {
+      try {
+        const storageRef = ref(storage, `images/logs/${currentUser?.uid}/${myFiles[0].name}`);
+        const uploadTask = uploadBytesResumable(storageRef, myFiles[0]);
+
+        uploadTask.on(
+          'state_changed',
+          (snapshot: firebaseOnLoadProp) => {
+            const progress: number = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log(`Upload is ${progress}% done`);
+            switch (snapshot.state) {
+              case 'paused':
+                console.log('Upload is paused');
+              case 'running':
+                console.log('Upload is running');
                 break;
             }
-          }
-        },
-      );
-    } catch (error) {
-      console.error(error);
+          },
+          (error: StorageError) => {
+            //失敗した場合
+            switch (error.code) {
+              case 'storage/unauthorized':
+                console.error('権限がありません');
+                break;
+              case 'storage/canceled':
+                console.error('アップロードがキャンセルされました');
+                break;
+              case 'storage/unknown':
+                console.error('予期せぬエラーが発生しました');
+                break;
+            }
+          },
+          () => {
+            //成功した時
+            try {
+              getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl: string) => {
+                try {
+                  setPhotoURL(downloadUrl);
+                  addDoc(collection(db, 'logData'), { ...logFormItems });
+                } catch (error) {
+                  console.log(error);
+                  return Promise.reject(error);
+                }
+                console.log(`ダウンロードしたURL ${downloadUrl}`);
+              });
+            } catch (error: any) {
+              switch (error.code) {
+                case 'storage/object-not-found':
+                  console.log('ファイルが存在しませんでした');
+                  break;
+                case 'storage/unauthorized':
+                  console.log('権限がありません');
+                  break;
+                case 'storage/canceled':
+                  console.log('キャンセルされました');
+                  break;
+                case 'storage/unknown':
+                  console.log('予期せぬエラーが生じました');
+                  break;
+              }
+            }
+          },
+        );
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
@@ -128,15 +147,27 @@ const LogForm: VFC = () => {
     setFavorite(e.target.value);
   };
 
+  useEffect(() => {
+    const getToday = () => {
+      const day = new Date();
+      let yyyy = day.getFullYear();
+      let mm = `0${day.getMonth() + 1}`.slice(-2);
+      let dd = `0${day.getDate()}`.slice(-2);
+      if (dateRef.current) dateRef.current.value = `${yyyy}-${mm}-${dd}`;
+    };
+    getToday();
+  }, []);
+
   return (
     <LogBox>
       <form onSubmit={handleSubmit}>
         <Input
           ref={nameRef}
-          name={'name'}
+          name={'wineName'}
           type={'text'}
           placeholder={'ちゃちゃっとワイン'}
           inputFormTitle={'ワイン名'}
+          required={true}
         />
         <Input
           ref={areaRef}

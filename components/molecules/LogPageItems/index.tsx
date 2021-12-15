@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import Avatar from '../../atoms/Avatar';
 import { collection, getDocs, query, where, orderBy, limit } from 'firebase/firestore';
 import { db } from '../../../lib/firebase';
-import { getAuth } from '@firebase/auth';
 import { LogList } from '../LogList';
 import { Pentagon } from '../../organisms/PentagonGraph';
 import { Button } from '../../atoms/Button';
 import { tab } from '../../../lib/media';
+import { useAuth } from '../../../lib/AuthContext';
 
 export type LogItemProps = {
   uid: string;
@@ -29,15 +29,10 @@ export type LogItemProps = {
 };
 
 const LogPageItems: VFC = () => {
-  const currentUser = getAuth().currentUser;
+  const { currentUser } = useAuth();
   const [open, setOpen] = useState<boolean>(false);
   const [items, setItems] = useState<LogItemProps[] | null>(null);
   const [initItems, setInitItems] = useState<LogItemProps[] | null>(null);
-
-  const handleClose = () => {
-    setItems(initItems);
-    setOpen(false);
-  };
 
   const handleOpen = (id: string) => {
     if (items) {
@@ -47,7 +42,13 @@ const LogPageItems: VFC = () => {
     }
   };
 
+  const handleClose = () => {
+    setItems(initItems);
+    setOpen(false);
+  };
+
   useEffect(() => {
+    if (!currentUser) return;
     const getData = async () => {
       try {
         const q = query(
@@ -57,9 +58,9 @@ const LogPageItems: VFC = () => {
           limit(10),
         );
         const snapShots = await getDocs(q);
-        const logItems: LogItemProps[] = [];
-        snapShots.forEach((doc) => {
-          logItems.push(doc.data() as LogItemProps);
+        const logItems: LogItemProps[] = snapShots.docs.map((doc) => {
+          console.log(doc.data());
+          return doc.data() as LogItemProps;
         });
         return [setItems(logItems), setInitItems(logItems)];
       } catch (error) {
@@ -67,7 +68,7 @@ const LogPageItems: VFC = () => {
       }
     };
     getData();
-  }, []);
+  }, [currentUser]);
 
   return (
     <>

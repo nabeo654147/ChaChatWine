@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useState } from 'react';
 import styled from 'styled-components';
 
 type Props = {
@@ -8,9 +8,11 @@ type Props = {
   min?: string;
   max?: string;
   list?: string;
+  defaultValue?: string;
   autocompleate?: string;
   placeholder?: string;
   inputFormTitle: string;
+  required?: boolean;
 };
 
 export const Input = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
@@ -27,6 +29,8 @@ export const Input = forwardRef<HTMLInputElement, Props>((props: Props, ref) => 
         list={props.list}
         autoComplete={props.autocompleate}
         placeholder={props.placeholder}
+        defaultValue={props.defaultValue}
+        required={props.required}
       />
     </FormWrap>
   );
