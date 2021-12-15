@@ -2,16 +2,16 @@ import React, { VFC } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useAuth } from '../lib/AuthContext';
-import { getAuth } from '@firebase/auth';
 import { Button } from './atoms/Button';
 import styled from 'styled-components';
+import { sp } from '../lib/media';
 
 type Props = {
-  title?: string;
-  description?: string;
+  title: string;
+  description: string;
   beforeSubMessage?: string;
   afterSubMessage?: string;
-  children?: React.ReactNode;
+  children: React.ReactNode;
 };
 
 export const Layout: VFC<Props> = ({
@@ -21,9 +21,8 @@ export const Layout: VFC<Props> = ({
   afterSubMessage,
   children,
 }) => {
-  const pageTitel = title || 'ホームページタイトル';
-  const currentUser = getAuth().currentUser;
-  const { isAnonymous, logout } = useAuth();
+  const pageTitel = title;
+  const { currentUser, logout } = useAuth();
 
   const handleLogout = () => {
     logout();
@@ -31,14 +30,14 @@ export const Layout: VFC<Props> = ({
   };
 
   return (
-    <Absolute>
+    <Relative>
       <Head>
         <title>{pageTitel}</title>
-        <meta name='description' content={description || 'ホームページ概要'} />
+        <meta name='description' content={description} />
       </Head>
       <header>
         <h1>{pageTitel}</h1>
-        {isAnonymous === false && (
+        {currentUser && (
           <SubTitle>
             {beforeSubMessage}
             {currentUser?.displayName}
@@ -47,26 +46,53 @@ export const Layout: VFC<Props> = ({
         )}
         <HeaderNav>
           <Link href='/'>Home</Link>
-          {!isAnonymous && <Button text={'ログアウト'} onClick={handleLogout} />}
+          {currentUser && (
+            <Button text={'ログアウト'} size={'large'} shape={'round'} onClick={handleLogout} />
+          )}
         </HeaderNav>
       </header>
       <main>{children}</main>
       <footer>&copy; ChaChatWine</footer>
-    </Absolute>
+    </Relative>
   );
 };
 
 const HeaderNav = styled.nav`
   width: 20%;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  flex-direction: column;
   justify-content: space-around;
+  button {
+    background: #fba059;
+    border: none;
+  }
+  a {
+    font-size: 1.5rem;
+  }
+  ${sp`
+    visibility: hidden;
+  `}
 `;
 
-const SubTitle = styled.h3`
+const SubTitle = styled.p`
+  font-weight: bold;
+  font-size: 1.8rem;
+  font-family: serif;
+  margin: auto;
   color: #ffbe92;
+  ${sp`
+    font-size: 1.3rem;
+  `}
 `;
 
-const Absolute = styled.div`
-  position: absolute;
+const Relative = styled.div`
+  position: relative;
+  z-index: 1;
+  h1 {
+    font-size: 2.5rem;
+    font-family: cursive;
+    font-weight: bolder;
+    text-shadow: 3px 3px 3px #e1cece;
+  }
 `;
