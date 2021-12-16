@@ -5,10 +5,13 @@ import { useAuth } from '../lib/AuthContext';
 import { Button } from './atoms/Button';
 import styled from 'styled-components';
 import { sp } from '../lib/media';
+import LogoutIcon from '@mui/icons-material/Logout';
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 
 type Props = {
   title: string;
   description: string;
+  logoutButton?: boolean;
   beforeSubMessage?: string;
   afterSubMessage?: string;
   children: React.ReactNode;
@@ -17,6 +20,7 @@ type Props = {
 export const Layout: VFC<Props> = ({
   title,
   description,
+  logoutButton = false,
   beforeSubMessage,
   afterSubMessage,
   children,
@@ -45,9 +49,19 @@ export const Layout: VFC<Props> = ({
           </SubTitle>
         )}
         <HeaderNav>
-          <Link href='/'>Home</Link>
-          {currentUser && (
-            <Button text={'ログアウト'} size={'large'} shape={'round'} onClick={handleLogout} />
+          <Button
+            shape={'iconCircle'}
+            icon={
+              <Link href='/'>
+                <HomeRoundedIcon />
+              </Link>
+            }
+          />
+
+          {currentUser && logoutButton === true && (
+            <Button shape={'iconCircle'} icon={<LogoutIcon />} onClick={handleLogout} />
+
+            // <Button text={'ログアウト'} size={'large'} shape={'round'} onClick={handleLogout} />
           )}
         </HeaderNav>
       </header>
@@ -58,27 +72,36 @@ export const Layout: VFC<Props> = ({
 };
 
 const HeaderNav = styled.nav`
-  width: 20%;
   display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: space-around;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding-bottom: 0.2rem;
   button {
+    height: 3rem;
+    width: 3rem;
+    margin: 0 0.5rem;
     background: #fba059;
-    border: none;
+    ${sp`
+      margin: 0 0.2rem;
+  `}
   }
   a {
     font-size: 1.5rem;
   }
   ${sp`
-    visibility: hidden;
+    font-size: 1rem;
   `}
+  svg {
+    font-size: 2rem;
+    color: #ffffff;
+  }
 `;
 
 const SubTitle = styled.p`
   font-weight: bold;
   font-size: 1.8rem;
   font-family: serif;
+  padding: 0 2rem;
   margin: auto;
   color: #ffbe92;
   ${sp`

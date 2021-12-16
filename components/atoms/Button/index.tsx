@@ -53,7 +53,7 @@ export const Button: FC<Props> = ({
 const ButtonStyle = styled.button<Props>`
   //デフォルトのスタイル
   background-color: transparent;
-  /* border: none; */
+  border: none;
   cursor: pointer;
   outline: none;
   appearance: none;

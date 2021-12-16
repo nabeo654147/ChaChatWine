@@ -30,8 +30,7 @@ const Ul = styled.ul`
     cursor: pointer;
   }
   li {
-    font-family: cursive;
-    font-weight: 600;
+    font-weight: 500;
     position: relative;
     padding: 0.5em 0.5em 0.5em 0.5em;
     line-height: 1.5;
