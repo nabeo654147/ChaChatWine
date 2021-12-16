@@ -34,11 +34,11 @@ const SuggestionModal: VFC<ModalProps> = ({ open, loading, items, handleClose })
                   </React.Fragment>
                 );
               })}
-            <CloseButton
-              onClick={handleClose}
+            <Button
               text={'閉じる'}
               shape={'round'}
               style={{ background: '#919191' }}
+              onClick={handleClose}
             />
             {/* <a
               // href={'https://www.aeondewine.com/shop/category/category.aspx?category=a106'}
@@ -78,8 +78,4 @@ const Modal = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const CloseButton = styled(Button)`
-  /* background: #c4e216; */
 `;

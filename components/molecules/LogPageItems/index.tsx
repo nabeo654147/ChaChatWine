@@ -134,7 +134,6 @@ const Overlay = styled.div<{ open: boolean }>`
   left: 0;
   width: 100%;
   height: 100%;
-  padding: 0.5rem;
   background-color: #3f3f3f7f;
   display: flex;
   align-items: center;

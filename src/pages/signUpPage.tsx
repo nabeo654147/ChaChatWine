@@ -40,7 +40,7 @@ const SignUpPage: NextPage = () => {
     }
   };
 
-  // useRequireLogin();
+  useRequireLogin();
 
   return (
     <Layout title='Sign Up Page' description='新規登録用のページ'>
@@ -122,7 +122,6 @@ export const FormBox = styled.form`
     color: #ff7d31;
   }
   button {
-    border: none;
     background: #fd9456;
   }
 `;

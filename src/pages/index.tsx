@@ -16,6 +16,7 @@ const Home: NextPage = () => {
         title={'ChaChatWine'}
         description={'ホームページ概要'}
         beforeSubMessage={'ようこそ！'}
+        logoutButton={true}
       >
         <LeafIcon>
           <Image src='/img/leaf.png' height={80} width={300} />

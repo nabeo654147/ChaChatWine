@@ -10,7 +10,7 @@ import { FormBox } from './signUpPage';
 import { Button } from '../../components/atoms/Button';
 
 const LoginPage: NextPage = () => {
-  const { isAnonymous, login } = useAuth();
+  const { currentUser, login } = useAuth();
 
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -55,7 +55,7 @@ const LoginPage: NextPage = () => {
           size={'large'}
           shape={'round'}
           onClick={handleLogin}
-          disabled={loading || isAnonymous === false || undefined}
+          disabled={loading || !currentUser || undefined}
         />
         <Link href='/signUpPage'>
           <a>新規登録</a>
