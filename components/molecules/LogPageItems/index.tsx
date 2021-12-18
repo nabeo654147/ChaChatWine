@@ -59,7 +59,6 @@ const LogPageItems: VFC = () => {
         );
         const snapShots = await getDocs(q);
         const logItems: LogItemProps[] = snapShots.docs.map((doc) => {
-          console.log(doc.data());
           return doc.data() as LogItemProps;
         });
         return [setItems(logItems), setInitItems(logItems)];
