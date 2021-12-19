@@ -1,6 +1,8 @@
 import React, { VFC } from 'react';
 import styled from 'styled-components';
+import { useAuth } from '../../../lib/AuthContext';
 import Avatar from '../../atoms/Avatar';
+import Link from 'next/link';
 import { Button } from '../../atoms/Button';
 
 type ModalProps = {
@@ -17,6 +19,8 @@ export type SuggestionData = {
 };
 
 const SuggestionModal: VFC<ModalProps> = ({ open, loading, items, handleClose }) => {
+  const currentUser = useAuth();
+
   return (
     <Overlay open={open}>
       <Modal>
@@ -49,6 +53,12 @@ const SuggestionModal: VFC<ModalProps> = ({ open, loading, items, handleClose })
             >
               ネットを見に行く
             </a> */}
+            {!currentUser && (
+              <>
+                <p>ユーザー登録をすると記録ページへアクセスできるようになります！</p>
+                <Link href='/'>新規登録</Link>
+              </>
+            )}
           </>
         )}
       </Modal>
