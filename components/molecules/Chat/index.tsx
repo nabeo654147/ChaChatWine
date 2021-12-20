@@ -14,9 +14,9 @@ const Chat: VFC<ChatProps> = ({ type, text }) => {
     <ChatRow type={type}>
       <div>
         {isQuestion ? (
-          <Avatar src={'/img/corksan.jpeg'} size={50} />
+          <Avatar src={'/img/sommelierIcon.png'} size={60} background={'white'} />
         ) : (
-          <Avatar src={'/img/corkboy.jpg'} size={50} />
+          <Avatar src={'/img/CorkBoyIcon.png'} size={60} background={'white'} />
         )}
       </div>
       <ChatBubble>{text}</ChatBubble>
