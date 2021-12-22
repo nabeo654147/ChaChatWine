@@ -6,11 +6,11 @@ import { Layout } from '../../components/layout';
 import { Input } from '../../components/molecules/Input';
 import { Button } from '../../components/atoms/Button';
 import { useAuth } from '../../lib/AuthContext';
-import { useRequireLogin } from '../../utils/hooks/useRequireLogin';
 import { updateProfile } from '@firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 import { pc, tab, sp } from '../../lib/media';
+import { useRequireLogin } from '../../utils/hooks/useRequireLogin';
 
 const SignUpPage: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -33,7 +33,7 @@ const SignUpPage: NextPage = () => {
           uid: registerUser.user.uid,
         });
       } catch (error) {
-        alert('Error!');
+        alert('未入力の値があります');
         console.log(error);
       }
       setLoading(false);
@@ -49,9 +49,11 @@ const SignUpPage: NextPage = () => {
           ref={userNameRef}
           name={'userName'}
           type={'text'}
+          max={'12'}
           autocompleate={'username'}
           placeholder={'ユーザー名'}
           inputFormTitle={'ユーザー名'}
+          required
         />
         <Input
           ref={emailRef}
@@ -60,6 +62,7 @@ const SignUpPage: NextPage = () => {
           autocompleate={'username'}
           placeholder={'Email'}
           inputFormTitle={'Email'}
+          required
         />
         <Input
           ref={passwordRef}
@@ -68,6 +71,7 @@ const SignUpPage: NextPage = () => {
           autocompleate={'new-password'}
           placeholder={'Password'}
           inputFormTitle={'Password'}
+          required
         />
         <Button
           text={'登録'}
@@ -81,6 +85,8 @@ const SignUpPage: NextPage = () => {
     </Layout>
   );
 };
+
+export default SignUpPage;
 
 export const FormBox = styled.form`
   position: absolute;
@@ -125,5 +131,3 @@ export const FormBox = styled.form`
     background: #fd9456;
   }
 `;
-
-export default SignUpPage;

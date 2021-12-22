@@ -55,7 +55,7 @@ const LoginPage: NextPage = () => {
           size={'large'}
           shape={'round'}
           onClick={handleLogin}
-          disabled={loading || !currentUser || undefined}
+          disabled={loading || currentUser !== null || undefined}
         />
         <Link href='/signUpPage'>
           <a>新規登録</a>
