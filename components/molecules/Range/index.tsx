@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 type Props = {
@@ -10,10 +10,15 @@ type Props = {
   min: number;
   max: number;
   value: number;
+  initRange: boolean;
 };
 
 export const Range = forwardRef<HTMLInputElement, Partial<Props>>((props: Partial<Props>, ref) => {
   const [value, setValue] = useState<number | string>(3);
+
+  useEffect(() => {
+    if (props.initRange === false) setValue(3);
+  }, [props.initRange]);
 
   return (
     <RangeWrap>
