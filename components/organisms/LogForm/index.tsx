@@ -30,7 +30,8 @@ const LogForm: VFC = () => {
   const [favorite, setFavorite] = useState<string>('3star');
   const [myFiles, setMyFiles] = useState<File[]>([]);
   const [src, setSrc] = useState<string>('');
-  const [photoURL, setPhotoURL] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [initRange, setInitRange] = useState<boolean>(false);
 
   const nameRef = useRef<HTMLInputElement>(null);
   const areaRef = useRef<HTMLInputElement>(null);
@@ -46,6 +47,7 @@ const LogForm: VFC = () => {
   const commentRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
+    setLoading(true);
     e.preventDefault();
 
     const logFormItems = {
@@ -58,7 +60,6 @@ const LogForm: VFC = () => {
       date: dateRef.current?.value,
       favorability: favorite,
       type: typeRef.current?.value,
-      photoURL: photoURL,
       aroma: Number(aromaRef.current?.value),
       sweetness: Number(sweetnessRef.current?.value),
       acidity: Number(acidityRef.current?.value),
@@ -69,7 +70,11 @@ const LogForm: VFC = () => {
 
     if (myFiles[0] === undefined) {
       try {
-        addDoc(collection(db, 'logData'), { ...logFormItems });
+        await addDoc(collection(db, 'logData'), { ...logFormItems, photoURL: '' });
+        initForm();
+        setInitRange(false);
+        alert('保存が完了しました！');
+        setLoading(false);
       } catch (error) {
         console.log(error);
         return Promise.reject(error);
@@ -106,19 +111,21 @@ const LogForm: VFC = () => {
                 break;
             }
           },
-          () => {
+          async () => {
             //成功した時
             try {
-              getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl: string) => {
-                try {
-                  setPhotoURL(downloadUrl);
-                  addDoc(collection(db, 'logData'), { ...logFormItems });
-                } catch (error) {
-                  console.log(error);
-                  return Promise.reject(error);
-                }
+              const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
+              try {
                 console.log(`ダウンロードしたURL ${downloadUrl}`);
-              });
+                await addDoc(collection(db, 'logData'), { ...logFormItems, photoURL: downloadUrl });
+                initForm();
+                setInitRange(false);
+                alert('保存完了しました！');
+                setLoading(false);
+              } catch (error) {
+                console.log(error);
+                return Promise.reject(error);
+              }
             } catch (error: any) {
               switch (error.code) {
                 case 'storage/object-not-found':
@@ -145,6 +152,23 @@ const LogForm: VFC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFavorite(e.target.value);
+  };
+
+  const initForm = () => {
+    setInitRange(true);
+    nameRef.current!.value = '';
+    areaRef.current!.value = '';
+    vintageRef.current!.value = '';
+    priceRef.current!.value = '';
+    typeRef.current!.value = '赤';
+    aromaRef.current!.value = '3';
+    sweetnessRef.current!.value = '3';
+    acidityRef.current!.value = '3';
+    astringencyRef.current!.value = '3';
+    afterglowRef.current!.value = '3';
+    commentRef.current!.value = '';
+    setFavorite('3star');
+    setMyFiles([]);
   };
 
   useEffect(() => {
@@ -212,11 +236,46 @@ const LogForm: VFC = () => {
         <UploaderBox>
           <Uploader src={src} myFiles={myFiles} setSrc={setSrc} setMyFiles={setMyFiles} />
           <div>
-            <Range ref={aromaRef} rangeTitle={'香り'} step={1} min={1} max={5} />
-            <Range ref={sweetnessRef} rangeTitle={'甘味'} step={1} min={1} max={5} />
-            <Range ref={acidityRef} rangeTitle={'酸味'} step={1} min={1} max={5} />
-            <Range ref={astringencyRef} rangeTitle={'渋味'} step={1} min={1} max={5} />
-            <Range ref={afterglowRef} rangeTitle={'余韻'} step={1} min={1} max={5} />
+            <Range
+              ref={aromaRef}
+              rangeTitle={'香り'}
+              step={1}
+              min={1}
+              max={5}
+              initRange={initRange}
+            />
+            <Range
+              ref={sweetnessRef}
+              rangeTitle={'甘味'}
+              step={1}
+              min={1}
+              max={5}
+              initRange={initRange}
+            />
+            <Range
+              ref={acidityRef}
+              rangeTitle={'酸味'}
+              step={1}
+              min={1}
+              max={5}
+              initRange={initRange}
+            />
+            <Range
+              ref={astringencyRef}
+              rangeTitle={'渋味'}
+              step={1}
+              min={1}
+              max={5}
+              initRange={initRange}
+            />
+            <Range
+              ref={afterglowRef}
+              rangeTitle={'余韻'}
+              step={1}
+              min={1}
+              max={5}
+              initRange={initRange}
+            />
           </div>
         </UploaderBox>
         <Textarea
@@ -230,7 +289,13 @@ const LogForm: VFC = () => {
           }
         />
         <ButtonPosition>
-          <Button size={'large'} shape={'round'} type={'submit'} text={'送信'} />
+          <Button
+            size={'large'}
+            shape={'round'}
+            type={'submit'}
+            text={'送信'}
+            disabled={loading === true}
+          />
         </ButtonPosition>
       </form>
     </LogBox>

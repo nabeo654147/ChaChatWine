@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import Chatbot from '../../components/Chatbot';
 import { Layout } from '../../components/layout';
 
