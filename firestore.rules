@@ -1,8 +1,45 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if request.auth.uid != null;
-    }
+
+  // 認証が済んでいるユーザーである
+  function isAuthenticated() {
+    return request.auth != null;
   }
+
+  //ユーザー ID も含めて、適切な者であるという認可
+  function isUserAuthenticated(uid) {
+    return isAuthenticated() && uid == request.auth.uid;
+  }
+
+  //ユーザーデータのスキーマ検証
+  function isValidUser(user) {
+    return user.size() == 3
+    && 'email' in user && user.email is string
+    && 'uid' in user && user.uid is string
+    && 'userName' in user && user.userName is string; 
+  }
+
+  //ルールの記述
+  match /users/{uid} {
+    //ユーザー情報の取得のルール
+    allow get: if isUserAuthenticated(uid);
+
+    //ユーザー情報の作成のルール
+    allow create: if isUserAuthenticated(uid)
+    && isValidUser(request.resource.data)
+    && request.resource.data.uid == uid;
+  }
+
+  //おすすめ用のデータのルール
+  match /suggestionData/{suggestionDataId=**} {
+    allow read: if true;
+  }
+
+  //記録ページのルール
+  match /logData/{logDataId} {
+    allow read: if resource.data.uid == request.auth.uid
+    allow create, update, delete: if isUserAuthenticated(request.resource.data.uid)
+  }
+ }
 }
