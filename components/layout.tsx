@@ -106,6 +106,7 @@ const SubTitle = styled.p`
   color: #ffbe92;
   ${sp`
     font-size: 1.3rem;
+    padding: 1rem 0;
   `}
 `;
 
